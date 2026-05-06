@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dorothy — CyberSec Arsenal</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --void: #04050a;
+  --deep: #07090f;
+  --surface: #0c0f1a;
+  --card: #0f1320;
+  --card-h: #131827;
+  --dim: rgba(255,255,255,0.055);
+  --dim2: rgba(255,255,255,0.1);
+  --r: #f43f5e;
+  --r-dim: rgba(244,63,94,0.12);
+  --r-border: rgba(244,63,94,0.35);
+  --b: #38bdf8;
+  --b-dim: rgba(56,189,248,0.1);
+  --b-border: rgba(56,189,248,0.3);
+  --txt: #dde4f0;
+  --txt2: #8897b0;
+  --txt3: #3d4f6b;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --purple: #a78bfa;
+}
+
+body {
+  background: var(--void);
+  color: var(--txt);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* scanlines */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+  pointer-events:none;
+  z-index:9999;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ─── SCREENS ─── */
+.screen { display:block; }
+
+/* ══════════════════════════════════
+   LANDING SCREEN
+══════════════════════════════════ */
+#landing {
+  min-height: 100svh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.bg-radial-red {
+  position: absolute;
+  width: 600px; height: 600px;
+  left: -200px; top: 50%;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(244,63,94,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.bg-radial-blue {
+  position: absolute;
+  width: 600px; height: 600px;
+  right: -200px; top: 50%;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.landing-inner {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  max-width: 700px;
+}
+
+.logo-area {
+  margin-bottom: 3rem;
+}
+
+.logo-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logo-eyebrow::before,
+.logo-eyebrow::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green));
+}
+.logo-eyebrow::after { background: linear-gradient(90deg, var(--green), transparent); }
+
+.logo-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: inline-block;
+}
+
+.logo-name .d-letter {
+  background: linear-gradient(135deg, #fff 30%, #8897b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-name .ot-letters {
+  background: linear-gradient(135deg, #c8d4e8 0%, #4a5a78 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-name .hy-letters {
+  background: linear-gradient(135deg, #6b7a96 0%, #2d3a52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-name .underscore-letter {
+  background: linear-gradient(135deg, #34d399 0%, #0f7a52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+}
+
+.logo-name .void-letters {
+  background: linear-gradient(135deg, #2a3548 0%, #0d1117 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--txt3);
+  letter-spacing: 2px;
+  margin-top: 1rem;
+}
+
+.logo-sub {
+  font-size: 15px;
+  color: var(--txt2);
+  margin-top: 0.5rem;
+  letter-spacing: 1px;
+}
+
+/* Team select cards */
+.team-select {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.team-btn {
+  position: relative;
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  border: 1px solid;
+  background: transparent;
+  text-align: left;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+.team-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.team-btn-red {
+  border-color: var(--r-border);
+}
+.team-btn-red::before { background: var(--r-dim); }
+.team-btn-red:hover { border-color: var(--r); box-shadow: 0 0 30px rgba(244,63,94,0.12), inset 0 0 30px rgba(244,63,94,0.05); }
+.team-btn-red:hover::before { opacity: 1; }
+
+.team-btn-blue {
+  border-color: var(--b-border);
+}
+.team-btn-blue::before { background: var(--b-dim); }
+.team-btn-blue:hover { border-color: var(--b); box-shadow: 0 0 30px rgba(56,189,248,0.12), inset 0 0 30px rgba(56,189,248,0.05); }
+.team-btn-blue:hover::before { opacity: 1; }
+
+.team-btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  position: relative;
+}
+
+.team-btn-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.red-text { color: var(--r); }
+.blue-text { color: var(--b); }
+
+.team-btn-desc {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--txt3);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.team-btn-count {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.count-red { background: var(--r-dim); color: var(--r); border: 1px solid var(--r-border); }
+.count-blue { background: var(--b-dim); color: var(--b); border: 1px solid var(--b-border); }
+
+.landing-footer-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--txt3);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.warning-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); display: inline-block; animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+/* ══════════════════════════════════
+   TOOLS SCREEN
+══════════════════════════════════ */
+#tools-screen {
+  min-height: 100vh;
+  display: none;
+  scroll-margin-top: 0;
+}
+
+/* Top nav */
+.top-nav {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--dim);
+  background: rgba(4,5,10,0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1.5rem;
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--txt);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo:hover { color: #fff; }
+
+.nav-team-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.badge-red-nav { background: var(--r-dim); color: var(--r); border: 1px solid var(--r-border); }
+.badge-blue-nav { background: var(--b-dim); color: var(--b); border: 1px solid var(--b-border); }
+
+.nav-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.flt-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 3px;
+  border: 1px solid var(--dim);
+  background: transparent;
+  color: var(--txt2);
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.flt-btn:hover { border-color: var(--dim2); color: var(--txt); background: rgba(255,255,255,0.04); }
+.flt-btn.on { background: rgba(255,255,255,0.07); border-color: var(--dim2); color: var(--txt); }
+.flt-btn.on-r { background: var(--r-dim); border-color: var(--r-border); color: var(--r); }
+.flt-btn.on-b { background: var(--b-dim); border-color: var(--b-border); color: var(--b); }
+
+.back-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 5px 12px;
+  border: 1px solid var(--dim);
+  background: transparent;
+  color: var(--txt3);
+  cursor: pointer;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.back-btn:hover { color: var(--txt); border-color: var(--dim2); }
+
+/* Tools grid */
+.tools-body {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tools-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--dim);
+}
+
+.tools-heading {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.tools-count {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--txt3);
+  letter-spacing: 1px;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 2rem 0 1rem;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--dim);
+}
+
+.section-divider-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.div-install { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+.div-browser { background: rgba(167,139,250,0.08); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+
+/* Tool cards grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+.tool-card {
+  background: var(--card);
+  border-radius: 6px;
+  border: 1px solid var(--dim);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.tool-card-accent {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.acc-r { background: linear-gradient(180deg, var(--r) 0%, rgba(244,63,94,0.2) 100%); }
+.acc-b { background: linear-gradient(180deg, var(--b) 0%, rgba(56,189,248,0.2) 100%); }
+
+.tool-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--dim2);
+}
+
+.card-r:hover { box-shadow: 0 8px 30px rgba(244,63,94,0.08); }
+.card-b:hover { box-shadow: 0 8px 30px rgba(56,189,248,0.08); }
+
+.card-inner {
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.card-name {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+.card-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.b-os { background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.25); }
+.b-free { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
+.b-paid { background: rgba(244,63,94,0.1); color: #fb7185; border: 1px solid rgba(244,63,94,0.2); }
+.b-web { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+
+.card-use {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+.use-r { color: var(--r); }
+.use-b { color: var(--b); }
+
+.card-desc {
+  font-size: 14px;
+  color: var(--txt2);
+  line-height: 1.65;
+  font-family: 'Syne', sans-serif;
+  font-weight: 400;
+}
+
+.card-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--dim);
+}
+
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--txt3);
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1.25rem 0.75rem 1.5rem;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid var(--dim);
+}
+
+.card-link-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--txt3);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-link-hint::after { content: '→'; }
+
+.tool-card:hover .card-link-hint { color: var(--txt2); }
+
+/* hidden state */
+.hidden { display: none !important; }
+
+/* section hidden */
+.section-wrap.hidden { display: none !important; }
+
+/* glitch */
+@keyframes glitch {
+  0%,92%,100% { clip-path:none; transform:none; }
+  93% { clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%); transform:translate(-3px,0); }
+  95% { clip-path:polygon(0 65%,100% 65%,100% 85%,0 85%); transform:translate(3px,0); }
+  97% { clip-path:none; transform:none; }
+}
+
+.logo-name { animation: glitch 10s infinite; }
+
+@keyframes bounceDown {
+  0%,100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.scroll-arrow {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1.5rem;
+  animation: bounceDown 1.2s ease-in-out infinite;
+  cursor: pointer;
+}
+.scroll-arrow-line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, var(--txt3));
+}
+.scroll-arrow-chevron {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--txt3);
+  letter-spacing: 2px;
+}
+.scroll-arrow.visible { display: flex; }
+
+@keyframes btnFlash {
+  0% { opacity: 1; }
+  30% { opacity: 0.5; }
+  60% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.team-btn.loading { animation: btnFlash 0.4s ease; pointer-events: none; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.team-select { animation: fadeUp 0.5s ease both; animation-delay: 0.2s; opacity:0; }
+.logo-area { animation: fadeUp 0.5s ease both; opacity:0; }
+
+@media(max-width:640px) {
+  .team-select { grid-template-columns: 1fr; }
+  .top-nav { flex-wrap: wrap; gap: 0.75rem; }
+  .nav-filters { justify-content: flex-start; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .tools-body { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LANDING ══════════ -->
+<div id="landing" class="screen active">
+  <div class="bg-grid"></div>
+  <div class="bg-radial-red"></div>
+  <div class="bg-radial-blue"></div>
+
+  <div class="landing-inner">
+    <div class="logo-area">
+      <div class="logo-eyebrow">CyberSec Arsenal · TH Edition</div>
+      <div class="logo-name">
+        <span class="d-letter">D</span><span class="ot-letters">or</span><span class="d-letter">o</span><span class="ot-letters">t</span><span class="hy-letters">hy</span>
+      </div>
+      <div class="logo-tagline">// SECURITY TOOLS DIRECTORY</div>
+      <div class="logo-sub">เลือกสายที่ต้องการเพื่อดู Tools</div>
+    </div>
+
+    <div class="team-select">
+      <button class="team-btn team-btn-red" onclick="this.classList.add('loading'); goTeam('red')">
+        <span class="team-btn-count count-red">15 TOOLS</span>
+        <span class="team-btn-icon">⚔</span>
+        <div class="team-btn-title red-text">OFFENSIVE</div>
+        <div class="team-btn-title red-text" style="font-size:0.75rem;letter-spacing:0.15em;opacity:0.7;margin-bottom:0.75rem;">SECURITY</div>
+        <div class="team-btn-desc">Red Team · Penetration Testing<br>Exploitation · Attack Simulation<br>Vulnerability Research</div>
+      </button>
+
+      <button class="team-btn team-btn-blue" onclick="this.classList.add('loading'); goTeam('blue')">
+        <span class="team-btn-count count-blue">15 TOOLS</span>
+        <span class="team-btn-icon">🛡</span>
+        <div class="team-btn-title blue-text">DEFENSIVE</div>
+        <div class="team-btn-title blue-text" style="font-size:0.75rem;letter-spacing:0.15em;opacity:0.7;margin-bottom:0.75rem;">SECURITY</div>
+        <div class="team-btn-desc">Blue Team · SOC · Forensics<br>Threat Detection · Monitoring<br>Incident Response</div>
+      </button>
+    </div>
+
+    <div class="landing-footer-note">
+      <span class="warning-dot"></span>
+      สำหรับการศึกษา · authorized testing · security research เท่านั้น
+    </div>
+
+    <div class="scroll-arrow" id="scroll-arrow" onclick="document.getElementById('tools-screen').scrollIntoView({behavior:'smooth'})">
+      <div class="scroll-arrow-line"></div>
+      <div class="scroll-arrow-chevron">↓ เลื่อนลง</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TOOLS SCREEN ══════════ -->
+<div id="tools-screen" class="screen">
+
+  <nav class="top-nav">
+    <button class="back-btn" onclick="goBack()">← HOME</button>
+    <span class="nav-logo">Dorothy</span>
+    <div id="nav-badge" class="nav-team-badge"></div>
+    <div class="nav-filters">
+      <button class="flt-btn on" id="flt-all" onclick="setFilter('all')">ALL</button>
+      <button class="flt-btn" id="flt-install" onclick="setFilter('install')">⬢ INSTALL</button>
+      <button class="flt-btn" id="flt-browser" onclick="setFilter('browser')">◈ BROWSER</button>
+    </div>
+  </nav>
+
+  <div class="tools-body">
+    <div class="tools-header-bar">
+      <div id="tools-heading" class="tools-heading"></div>
+      <div id="tools-count" class="tools-count"></div>
+    </div>
+
+    <!-- INSTALL SECTION -->
+    <div id="sec-install" class="section-wrap">
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label div-install">⬢ ติดตั้งบนเครื่อง — LOCAL INSTALL</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <div id="grid-install" class="cards-grid"></div>
+    </div>
+
+    <!-- BROWSER SECTION -->
+    <div id="sec-browser" class="section-wrap">
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label div-browser">◈ เปิดบน Browser ได้เลย — BROWSER BASED</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <div id="grid-browser" class="cards-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  red: {
+    install: [
+      {
+        name: "Metasploit Framework",
+        url: "https://www.metasploit.com",
+        os: "Linux/Win",
+        price: "FREE",
+        use: "Exploitation Framework",
+        desc: "Framework สำหรับ Penetration Testing ที่ครอบคลุมที่สุดในโลก รวบรวม exploit สำเร็จรูปไว้กว่า 2,000 รายการ รองรับตั้งแต่การสแกนหาช่องโหว่ ยิง payload ไปจนถึงการควบคุม session หลัง exploit สำเร็จ (Post-Exploitation) เหมาะสำหรับ pentester ทุกระดับ",
+        tags: ["exploitation","payload","post-exploit","meterpreter"]
+      },
+      {
+        name: "Nmap",
+        url: "https://nmap.org",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Network Reconnaissance",
+        desc: "Network scanner อันดับ 1 ของโลก ใช้สแกนหา host ที่ online, port ที่เปิดอยู่, service ที่รัน และระบบปฏิบัติการของเป้าหมาย มี scripting engine (NSE) ให้เขียน script ตรวจสอบช่องโหว่เพิ่มเติมได้ด้วย",
+        tags: ["port-scan","service-detect","os-detect","nse"]
+      },
+      {
+        name: "SQLMap",
+        url: "https://sqlmap.org",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "SQL Injection",
+        desc: "เครื่องมือทดสอบ SQL Injection แบบอัตโนมัติ ตรวจจับและโจมตีช่องโหว่ใน database ได้หลายชนิด ทั้ง MySQL, PostgreSQL, MSSQL และอื่นๆ สามารถดึงข้อมูล, bypass authentication และยึด shell ได้ในคลิกเดียว",
+        tags: ["sql-injection","web","database","automation"]
+      },
+      {
+        name: "Hydra",
+        url: "https://github.com/vanhauser-thc/thc-hydra",
+        os: "Linux",
+        price: "FREE",
+        use: "Password Brute-Force",
+        desc: "เครื่องมือ brute-force password แบบ parallelized รองรับ protocol มากกว่า 50 ชนิด เช่น SSH, FTP, HTTP, RDP, SMB, Telnet ทดสอบ credential ได้รวดเร็วมาก ใช้ตรวจสอบความแข็งแกร่งของ password policy",
+        tags: ["brute-force","credentials","ssh","ftp"]
+      },
+      {
+        name: "Aircrack-ng",
+        url: "https://www.aircrack-ng.org",
+        os: "Linux",
+        price: "FREE",
+        use: "Wireless Security Audit",
+        desc: "ชุดเครื่องมือสำหรับตรวจสอบความปลอดภัยเครือข่าย Wi-Fi ครบวงจร ตั้งแต่ capture handshake, crack รหัส WPA/WPA2, deauthentication attack ไปจนถึง monitor mode ต้องใช้ wireless adapter ที่รองรับ monitor mode",
+        tags: ["wifi","wireless","wpa","deauth"]
+      },
+      {
+        name: "Hashcat",
+        url: "https://hashcat.net",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Password Recovery",
+        desc: "Password cracking tool ที่เร็วที่สุดในโลก ใช้พลัง GPU ในการถอดรหัส hash ได้หลายพันล้านครั้งต่อวินาที รองรับ hash มากกว่า 300 ชนิด มีหลาย attack mode เช่น dictionary, brute-force, rule-based และ mask attack",
+        tags: ["hash-cracking","gpu","password","dictionary"]
+      },
+      {
+        name: "Burp Suite",
+        url: "https://portswigger.net/burp",
+        os: "Cross-Platform",
+        price: "PAID/FREE",
+        use: "Web App Pentest",
+        desc: "แพลตฟอร์ม Web Application Security Testing ที่ใช้กันมากที่สุด มีความสามารถดักจับและแก้ไข HTTP request (Proxy), สแกนหาช่องโหว่อัตโนมัติ, fuzzer, decoder และ repeater รุ่นฟรี (Community) ใช้ทดสอบพื้นฐานได้ดี",
+        tags: ["web-pentest","proxy","scanner","fuzzer"]
+      },
+      {
+        name: "Gobuster",
+        url: "https://github.com/OJ/gobuster",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Directory Brute-Force",
+        desc: "Directory/file brute-forcing tool แบบ multi-threaded เร็วมาก ใช้ค้นหา hidden path, directory, subdomain และ vhost บนเว็บเซิร์ฟเวอร์ด้วย wordlist ช่วยค้นพบหน้าเว็บที่ซ่อนอยู่และ endpoint ที่ไม่ได้ link ไว้",
+        tags: ["directory","brute-force","subdomain","web"]
+      }
+    ],
+    browser: [
+      {
+        name: "Exploit-DB",
+        url: "https://www.exploit-db.com",
+        type: "WEB",
+        price: "FREE",
+        use: "Exploit Database",
+        desc: "ฐานข้อมูล exploit สาธารณะที่ใหญ่ที่สุดในโลก ดูแลโดย Offensive Security มี PoC (Proof-of-Concept) สำหรับช่องโหว่ CVE จำนวนมาก ค้นหา exploit ตาม software, version หรือ CVE ID ได้ทันที",
+        tags: ["exploit","cve","poc","research"]
+      },
+      {
+        name: "GTFOBins",
+        url: "https://gtfobins.github.io",
+        type: "WEB",
+        price: "FREE",
+        use: "Linux Privilege Escalation",
+        desc: "ฐานข้อมูล Unix/Linux binary ที่สามารถใช้ bypass security restriction หรือยกระดับสิทธิ์ (Privilege Escalation) ได้ เหมาะสำหรับขั้นตอน Post-Exploitation บน Linux เช่น การ escape จาก restricted shell",
+        tags: ["privesc","linux","unix","bypass"]
+      },
+      {
+        name: "LOLBAS",
+        url: "https://lolbas-project.github.io",
+        type: "WEB",
+        price: "FREE",
+        use: "Windows Living Off The Land",
+        desc: "เวอร์ชัน Windows ของ GTFOBins รวม binary และ script ที่มาพร้อม Windows แต่สามารถนำมาใช้ download, execute หรือ bypass security ได้ เทคนิคนี้เรียกว่า Living Off The Land ช่วยหลีก antivirus",
+        tags: ["windows","lolbas","evasion","bypass"]
+      },
+      {
+        name: "CrackStation",
+        url: "https://crackstation.net",
+        type: "WEB",
+        price: "FREE",
+        use: "Online Hash Cracking",
+        desc: "บริการ crack hash ออนไลน์โดยใช้ Rainbow Table ขนาดยักษ์ 15 billion entries รองรับ MD5, SHA1, SHA256, NTLM และอื่นๆ ใช้ตรวจสอบว่า hash ที่ได้มาถูก crack ได้ง่ายหรือไม่ โดยไม่ต้องใช้พลัง GPU ตัวเอง",
+        tags: ["hash","rainbow-table","online","md5"]
+      },
+      {
+        name: "RevShells",
+        url: "https://www.revshells.com",
+        type: "WEB",
+        price: "FREE",
+        use: "Reverse Shell Generator",
+        desc: "เครื่องมือสร้าง Reverse Shell command แบบออนไลน์ รองรับภาษาและ protocol มากกว่า 40 แบบ เช่น Bash, Python, PHP, PowerShell, Netcat เพียงกรอก IP และ port ก็ได้ command สำเร็จรูปทันที",
+        tags: ["reverse-shell","payload","generator","web"]
+      },
+      {
+        name: "HackTricks",
+        url: "https://book.hacktricks.xyz",
+        type: "WEB",
+        price: "FREE",
+        use: "Pentest Knowledge Base",
+        desc: "สารานุกรม Penetration Testing ออนไลน์ที่ครอบคลุมและอัปเดตอยู่เสมอ รวมเทคนิค, cheatsheet และ methodology ทุกขั้นตอน ตั้งแต่ recon ไปจนถึง privilege escalation ใน Linux, Windows, AD, Cloud และ Web",
+        tags: ["knowledge-base","cheatsheet","methodology","reference"]
+      },
+      {
+        name: "Pentest-Tools.com",
+        url: "https://pentest-tools.com",
+        type: "WEB",
+        price: "PAID/FREE",
+        use: "Online Pentest Platform",
+        desc: "แพลตฟอร์ม pentest ออนไลน์รวมเครื่องมือหลายอย่างในที่เดียว ทั้ง network scanner, web vulnerability scanner, subdomain finder และ SSL checker เหมาะสำหรับทดสอบเบื้องต้นโดยไม่ต้องติดตั้งอะไร",
+        tags: ["online","scanner","recon","web-vuln"]
+      }
+    ]
+  },
+  blue: {
+    install: [
+      {
+        name: "Wireshark",
+        url: "https://www.wireshark.org",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Network Packet Analysis",
+        desc: "Network Protocol Analyzer ที่ได้รับความนิยมสูงสุดในโลก ดักจับและวิเคราะห์ network traffic แบบ real-time เห็นข้อมูลทุก packet ถึงระดับ byte รองรับ protocol มากกว่า 3,000 ชนิด ช่วยวิเคราะห์ปัญหาเครือข่ายและตรวจหา suspicious traffic",
+        tags: ["packet-capture","protocol","network","analysis"]
+      },
+      {
+        name: "Snort IDS/IPS",
+        url: "https://www.snort.org",
+        os: "Linux",
+        price: "FREE",
+        use: "Intrusion Detection",
+        desc: "ระบบตรวจจับการบุกรุก (IDS/IPS) แบบ rule-based ที่ใช้แพร่หลายที่สุดในโลก วิเคราะห์ traffic แบบ real-time เทียบกับ rule database หา attack patterns เช่น port scan, buffer overflow, malware communication และส่ง alert ทันที",
+        tags: ["ids","ips","rule-based","network-monitor"]
+      },
+      {
+        name: "Elastic SIEM (ELK)",
+        url: "https://www.elastic.co/siem",
+        os: "Cross-Platform",
+        price: "PAID/FREE",
+        use: "SIEM & Log Analysis",
+        desc: "แพลตฟอร์ม SIEM รวบรวม log จากทุก source ในองค์กร (Server, Firewall, App) เข้ามาวิเคราะห์ในที่เดียว ใช้ machine learning ตรวจจับ anomaly สร้าง dashboard และ alert อัตโนมัติ รองรับ scale ขนาดใหญ่มาก",
+        tags: ["siem","log-analysis","elk","threat-detect"]
+      },
+      {
+        name: "Volatility 3",
+        url: "https://github.com/volatilityfoundation/volatility3",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Memory Forensics",
+        desc: "Framework สำหรับ Memory Forensics ที่ทรงพลังที่สุด วิเคราะห์ RAM dump เพื่อหา malware ที่ซ่อนอยู่ใน memory, process ที่น่าสงสัย, network connection, credential ที่ค้างอยู่ และ artifact ต่างๆ โดยไม่ต้องรันระบบ",
+        tags: ["forensics","memory","ram","malware-hunt"]
+      },
+      {
+        name: "Wazuh",
+        url: "https://wazuh.com",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Host-based IDS + XDR",
+        desc: "แพลตฟอร์ม security monitoring แบบ open-source รวม HIDS, File Integrity Monitoring, Log Analysis และ Vulnerability Detection ในตัวเดียว ติดตั้ง agent บน endpoint แล้วส่ง alert มายัง dashboard กลาง เหมาะสำหรับ SOC",
+        tags: ["hids","fim","xdr","endpoint","soc"]
+      },
+      {
+        name: "YARA + Loki Scanner",
+        url: "https://github.com/Neo23x0/Loki",
+        os: "Cross-Platform",
+        price: "FREE",
+        use: "Malware Detection",
+        desc: "YARA เป็นภาษา pattern matching สำหรับเขียน rule ตรวจจับ malware ตาม signature ส่วน Loki ใช้ YARA rules สแกนหา IOC (Indicators of Compromise) บนระบบ เช่น ชื่อไฟล์ malware ที่รู้จัก, hash หรือ string ต้องสงสัย",
+        tags: ["yara","ioc","malware-detect","signature"]
+      },
+      {
+        name: "Autopsy",
+        url: "https://www.autopsy.com",
+        os: "Windows/Linux",
+        price: "FREE",
+        use: "Digital Forensics",
+        desc: "แพลตฟอร์ม Digital Forensics แบบ GUI ใช้ตรวจสอบ disk image, mobile device และ memory ในกรณี incident หรือ investigation ค้นหาไฟล์ที่ถูกลบ, timeline ของกิจกรรม, browser history, email และ artifact สำคัญต่างๆ",
+        tags: ["forensics","disk","timeline","investigation"]
+      },
+      {
+        name: "OpenVAS / Greenbone",
+        url: "https://www.openvas.org",
+        os: "Linux",
+        price: "FREE",
+        use: "Vulnerability Scanner",
+        desc: "Vulnerability Scanner แบบ open-source ที่ครอบคลุม ตรวจสอบช่องโหว่ใน host ทั้ง network โดย compare กับฐานข้อมูล CVE ล่าสุด สร้าง report ระบุความเสี่ยง พร้อม recommendation ช่วย prioritize การแก้ไข",
+        tags: ["vuln-scan","cve","network","assessment"]
+      }
+    ],
+    browser: [
+      {
+        name: "VirusTotal",
+        url: "https://www.virustotal.com",
+        type: "WEB",
+        price: "FREE",
+        use: "Multi-AV File Scanner",
+        desc: "บริการสแกนไฟล์และ URL ด้วย antivirus engine กว่า 70 ตัวพร้อมกันในคลิกเดียว ดูผลว่าถูกตรวจจับโดยกี่ engine, ดู behavior, network connection และ metadata ของไฟล์ เหมาะสำหรับ triage ไฟล์ต้องสงสัยอย่างรวดเร็ว",
+        tags: ["malware-scan","multi-av","file-analysis","url-scan"]
+      },
+      {
+        name: "Shodan",
+        url: "https://www.shodan.io",
+        type: "WEB",
+        price: "PAID/FREE",
+        use: "Internet Asset Discovery",
+        desc: "Search engine สำหรับ internet-connected device ค้นหา server, IoT, camera, router ที่เปิดให้เข้าถึงจากอินเทอร์เน็ต ใช้ตรวจสอบว่าองค์กรมี asset ที่ expose อยู่หรือไม่ และค้นหา vulnerable service ที่ถูก index ไว้",
+        tags: ["asset-discovery","iot","exposure","osint"]
+      },
+      {
+        name: "ANY.RUN",
+        url: "https://any.run",
+        type: "WEB",
+        price: "PAID/FREE",
+        use: "Interactive Malware Sandbox",
+        desc: "Malware sandbox แบบ interactive ที่ดูได้ real-time เห็น process tree, network call, file system change และ registry modification ขณะที่ malware รัน สามารถโต้ตอบกับ VM ได้ระหว่างการวิเคราะห์ สะดวกกว่า sandbox ทั่วไปมาก",
+        tags: ["sandbox","malware","behavior","real-time"]
+      },
+      {
+        name: "URLScan.io",
+        url: "https://urlscan.io",
+        type: "WEB",
+        price: "FREE",
+        use: "URL & Web Analysis",
+        desc: "วิเคราะห์ URL ที่น่าสงสัยอย่างปลอดภัยโดยให้ระบบเปิดแทน เห็น screenshot, DOM, network request, JavaScript และ resource ที่ถูกโหลด ตรวจหา phishing, malware distribution และ malicious redirect ได้ดีมาก",
+        tags: ["url-analysis","phishing","web-scan","safe-browse"]
+      },
+      {
+        name: "Hybrid Analysis",
+        url: "https://www.hybrid-analysis.com",
+        type: "WEB",
+        price: "FREE",
+        use: "Malware Analysis Sandbox",
+        desc: "บริการ malware analysis ฟรีจาก CrowdStrike รัน malware ใน sandbox หลายสภาพแวดล้อม (Windows, Linux, Android) และให้ผลละเอียดทั้ง static และ dynamic analysis รองรับไฟล์หลายชนิดและ URL",
+        tags: ["sandbox","malware-analysis","crowdstrike","multi-os"]
+      },
+      {
+        name: "MXToolbox",
+        url: "https://mxtoolbox.com",
+        type: "WEB",
+        price: "FREE",
+        use: "Email & DNS Security",
+        desc: "เครื่องมือตรวจสอบ email infrastructure และ DNS ครอบคลุม ตรวจสอบ SPF, DKIM, DMARC, Blacklist status, MX record และ email header วิเคราะห์หาสัญญาณ phishing หรือ spoofing ใน email ที่ต้องสงสัย",
+        tags: ["email","dns","spf","dmarc","blacklist"]
+      },
+      {
+        name: "CyberChef",
+        url: "https://gchq.github.io/CyberChef",
+        type: "WEB",
+        price: "FREE",
+        use: "Data Analysis & Decoding",
+        desc: "The Cyber Swiss Army Knife เครื่องมือ encode/decode/analyze ข้อมูลแบบ drag-and-drop รองรับ operation กว่า 300 แบบ เช่น Base64, XOR, AES, regex, hash, magic number ใช้วิเคราะห์ payload ที่ obfuscate หรือถอดรหัส malware",
+        tags: ["decode","encode","analysis","cyberchef","forensics"]
+      }
+    ]
+  }
+};
+
+let currentTeam = 'red';
+let currentFilter = 'all';
+
+function goTeam(team) {
+  currentTeam = team;
+  currentFilter = 'all';
+
+  // Show tools section first
+  const toolsEl = document.getElementById('tools-screen');
+  toolsEl.style.display = 'block';
+
+  // Set nav badge
+  const badge = document.getElementById('nav-badge');
+  if(team === 'red') {
+    badge.className = 'nav-team-badge badge-red-nav';
+    badge.textContent = '⚔ OFFENSIVE SECURITY';
+  } else {
+    badge.className = 'nav-team-badge badge-blue-nav';
+    badge.textContent = '🛡 DEFENSIVE SECURITY';
+  }
+
+  // Set heading
+  const heading = document.getElementById('tools-heading');
+  heading.style.color = team === 'red' ? 'var(--r)' : 'var(--b)';
+  heading.textContent = team === 'red' ? 'OFFENSIVE SECURITY TOOLS' : 'DEFENSIVE SECURITY TOOLS';
+
+  // Render cards
+  renderCards(team);
+
+  // Reset filter buttons
+  setFilterUI('all', team);
+
+  // Show scroll arrow hint on landing
+  document.getElementById('scroll-arrow').classList.add('visible');
+
+  // Scroll smoothly to tools section
+  setTimeout(() => {
+    toolsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function renderCards(team) {
+  const data = DATA[team];
+
+  // Install grid
+  const gi = document.getElementById('grid-install');
+  gi.innerHTML = '';
+  data.install.forEach(t => gi.appendChild(makeCard(t, team, 'install')));
+
+  // Browser grid
+  const gb = document.getElementById('grid-browser');
+  gb.innerHTML = '';
+  data.browser.forEach(t => gb.appendChild(makeCard(t, team, 'browser')));
+
+  updateCount();
+}
+
+function makeCard(t, team, type) {
+  const isRed = team === 'red';
+  const a = document.createElement('a');
+  a.href = t.url;
+  a.target = '_blank';
+  a.className = `tool-card card-${isRed ? 'r' : 'b'}`;
+  a.dataset.type = type;
+
+  const priceClass = t.price === 'FREE' ? 'b-free' : 'b-paid';
+  const typeClass = type === 'browser' ? 'b-web' : 'b-os';
+  const typeBadge = type === 'browser'
+    ? `<span class="badge b-web">WEB</span>`
+    : `<span class="badge b-os">${t.os || 'INSTALL'}</span>`;
+
+  const useColor = isRed ? 'use-r' : 'use-b';
+
+  a.innerHTML = `
+    <div class="tool-card-accent acc-${isRed ? 'r' : 'b'}"></div>
+    <div class="card-inner">
+      <div class="card-top">
+        <div class="card-name">${t.name}</div>
+        <div class="card-badges">
+          ${typeBadge}
+          <span class="badge ${priceClass}">${t.price}</span>
+        </div>
+      </div>
+      <div class="card-use ${useColor}">${t.use}</div>
+      <div class="card-desc">${t.desc}</div>
+      <div class="card-tags">${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+    </div>
+    <div class="card-footer">
+      <span class="card-link-hint">เปิดเว็บไซต์ </span>
+    </div>
+  `;
+  return a;
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  setFilterUI(f, currentTeam);
+
+  const secInstall = document.getElementById('sec-install');
+  const secBrowser = document.getElementById('sec-browser');
+
+  if(f === 'all') {
+    secInstall.classList.remove('hidden');
+    secBrowser.classList.remove('hidden');
+  } else if(f === 'install') {
+    secInstall.classList.remove('hidden');
+    secBrowser.classList.add('hidden');
+  } else {
+    secInstall.classList.add('hidden');
+    secBrowser.classList.remove('hidden');
+  }
+
+  updateCount();
+}
+
+function setFilterUI(f, team) {
+  const onClass = team === 'red' ? 'on-r' : 'on-b';
+  ['flt-all','flt-install','flt-browser'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'flt-btn';
+  });
+  const map = { all: 'flt-all', install: 'flt-install', browser: 'flt-browser' };
+  document.getElementById(map[f]).classList.add(onClass);
+}
+
+function updateCount() {
+  const data = DATA[currentTeam];
+  let count = 0;
+  if(currentFilter === 'all') count = data.install.length + data.browser.length;
+  else if(currentFilter === 'install') count = data.install.length;
+  else count = data.browser.length;
+  document.getElementById('tools-count').textContent = `แสดง ${count} tools`;
+}
+
+function goBack() {
+  document.getElementById('tools-screen').style.display = 'none';
+  document.getElementById('scroll-arrow').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
